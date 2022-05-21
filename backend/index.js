@@ -1,3 +1,4 @@
+const mysql = require('mysql');
 const QueryBuilder = require('node-querybuilder');
 const express = require('express');
 const fileupload = require("express-fileupload");
@@ -19,6 +20,14 @@ const settings = {
     "database": "semes",
     "pool_size": 50
 };
+
+var mysqlConnection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "semes",
+    multipleStatements: true
+})
 
 const pool = new QueryBuilder(settings, 'mysql', 'pool');
 let db = '';
@@ -4612,7 +4621,7 @@ app.post('/updateheader', (req, res) => {
     })
 });
 
-app.post('/getfeedetails', (req, res) => {
+app.post('/getfeedetails', async (req, res) => {
     let data = req.body;
     let result = ``;
     let total_fix;
