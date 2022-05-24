@@ -4877,7 +4877,8 @@ app.post('/departmentoption', (req, res) => {
 
 app.post('/getsubtopic', async (req, res) => {
     let data = req.body;
-    let rows = await runQuery(`SELECT scode,sname,fname,sem,did,dept,dv FROM subject WHERE id='${data.subject}'`)
+    if(data.topic!=''){
+        let rows = await runQuery(`SELECT scode,sname,fname,sem,did,dept,dv FROM subject WHERE id='${data.subject}'`)
     let subjectDetails = rows[0];
     let lessonPlan = await runQuery(`SELECT topicd FROM tlsnpln WHERE id='${data.topic}}'`)
     let subtopics = await runQuery(`SELECT id,sub_topic FROM tlsnpln WHERE scode='${subjectDetails.scode}' AND sname='${subjectDetails.sname}' AND
@@ -4897,4 +4898,5 @@ app.post('/getsubtopic', async (req, res) => {
     }
     // console.log(option)
     res.send(option)
+    }
 });
