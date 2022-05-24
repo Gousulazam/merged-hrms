@@ -127,6 +127,8 @@ export default function Addattendance(props) {
   const [subjectDetails, setSubjectDetails] = useState("");
   const [list, setList] = useState([]);
   const [button, setbutton] = useState([]);
+  const [pCount, setpCount] = useState(0);
+  const [aCount, setaCount] = useState(0);
   let dataNew = [{ student_id: "", scode: "", classes: "", values: "", text: "" }];
 
   useEffect(() => {
@@ -144,7 +146,7 @@ export default function Addattendance(props) {
       .then((response) => {
 
         setList(response.data);
-
+        setpCount(response.data.length);
         for (let i = 0; i < response.data.length; i++) {
           const element = response.data[i];
 
@@ -201,6 +203,8 @@ export default function Addattendance(props) {
     if (parseInt(e.target.value) === 1) {
       console.log(state1.vlv);
       // e.target.style.backgroundColor = "red";
+      setaCount(aCount+1);
+      setpCount(pCount-1);
       e.target.innerText = "Absent";
       e.target.value = 0;
       e.target.className="btn btn-danger rounded";
@@ -214,6 +218,8 @@ export default function Addattendance(props) {
     else {
 
       // e.target.style.backgroundColor = "Blue";
+      setaCount(aCount-1);
+      setpCount(pCount+1);
       e.target.value = 1;
       e.target.innerText = "Present";
       e.target.className="btn btn-success rounded";
@@ -260,7 +266,7 @@ export default function Addattendance(props) {
             <thead className="thead-dark text-center">
               <tr className="text-uppercase">
                 <th className="text-center">total</th>
-                <th colSpan="3">present : <span id="presentCount">{list.length}</span> <span className="float-right mr-5">absent : <span id="absentCount">0</span> </span></th>
+                <th colSpan="3">present : <span id="presentCount">{pCount}</span> <span className="float-right mr-5">absent : <span id="absentCount">{aCount}</span> </span></th>
               </tr>
               <tr className="text-uppercase">
                 <th className="text-center">Sl No</th>
