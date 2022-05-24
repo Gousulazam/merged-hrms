@@ -106,6 +106,15 @@ import {Update} from './pages/Newfee/Update';
 import { Transaction } from './pages/Newfee/Transaction';
 import { EditTransaction } from './pages/Newfee/EditTransaction';
 
+import Updatedivision from './pages/Student-module/Updatedivision';
+import Admissionformapproval from './pages/approval/Admissionformapproval';
+import ApproveAdmission from './pages/approval/ApproveAdmission';
+import ViewAdmittedStudentsnew from './pages/Student-module/ViewAdmittedStudentsnew';
+import Viewadmissionform from './pages/Student-module/Viewadmissionform';
+import AssingWorkload from './workload/AssingWorkload';
+import GetWorkloadReport from './workload/GetWorkloadReport';
+import WorkLoadReport from './workload/WorkLoadReport';
+
 
 function App() {
   const Dashboard = () => {
@@ -250,6 +259,14 @@ function App() {
               <Route path="/editstudentdetail" element={<Editstudentdetail baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/getdeletestudent" element={<Getdeletestudent baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/deletestudentlist" element={<Deletestudentlist baseURL={baseURL} userDetails={userDetails} />} />
+              <Route path="/updatedivision" element={<Updatedivision baseURL={baseURL} userDetails={userDetails}/>} />
+              <Route path="/admissionformapproval" element={<Admissionformapproval baseURL={baseURL} role={role} userDetails={userDetails}/>} />
+              <Route path="/approveAdmission" element={<ApproveAdmission baseURL={baseURL} role={role} userDetails={userDetails}/>} />
+              <Route path="/viewAdmittedStudentsnew" element={<ViewAdmittedStudentsnew baseURL={baseURL} role={role} userDetails={userDetails}/>} />
+              <Route path="/Viewadmissionform" element={<Viewadmissionform baseURL={baseURL} role={role} userDetails={userDetails}/>} />
+              <Route path="/AssingWorkload" element={<AssingWorkload baseURL={baseURL} role={role} userDetails={userDetails}/>} />
+              <Route path="/GetWorkloadReport" element={<GetWorkloadReport baseURL={baseURL} role={role} userDetails={userDetails}/>} />
+              <Route path="/WorkLoadReport" element={<WorkLoadReport baseURL={baseURL} role={role} userDetails={userDetails}/>} />
               {/* Sohail Moudule End */}
               {/* Gous Moudule Start */}
               <Route path="/attendance" element={<Attendance baseURL={baseURL} userDetails={userDetails} />} />

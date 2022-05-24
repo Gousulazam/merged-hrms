@@ -27,9 +27,6 @@ const Updatestudentlist = (props) => {
             .then((response) => {
                 setStudentDetails(response.data);
             });
-    }, [])
-
-    useEffect(() => {
         axios.post(`${props.baseURL}/getdepartmentdetailsbyid`, {
             did: state.did
         })
@@ -39,7 +36,6 @@ const Updatestudentlist = (props) => {
     }, [])
 
     const edit = (e) => {
-
         e.preventDefault();
         navigate("/editstudentdetail", { state: { academicYear, department, cid, dv, sem, studentId: e.target.value, did: state.did } });
     };
@@ -67,7 +63,7 @@ const Updatestudentlist = (props) => {
                     <tbody>
                         {
                             studentDetails.map((user, index) => (
-                                <tr className="text-capitalize">
+                                <tr className="text-capitalize" key={index}>
                                     <td>{index + 1}</td>
                                     <td>{user.usn}</td>
                                     <td>{user.studentname}</td>
