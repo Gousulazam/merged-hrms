@@ -1667,7 +1667,7 @@ app.post('/attendanceAdded', async (req, res) => {
                     id = element1.topic;
                 }
                 if (element1.status == "completed") {
-                    let updateLessonPlan = await runQuery(`UPDATE tlsnpln SET status='${element1.status}',class_id='${classInsert[0].insertId}'  WHERE id='${id}'`);
+                    let updateLessonPlan = await runQuery(`UPDATE tlsnpln SET status='${element1.status}',class_id='${classInsert.insertId}'  WHERE id='${id}'`);
                     if (updateLessonPlan.affectedRows > 0) {
                         upcheck++;
                     }
@@ -5327,4 +5327,27 @@ wt += `</table>
 </div>
 `;
     res.send(wt)
+}); 
+app.post('/getsubtopic', async (req, res) => {
+    let data = req.body;
+    let rows = await runQuery(`SELECT scode,sname,fname,sem,did,dept,dv FROM subject WHERE id='${data.subject}'`)
+    let subjectDetails = rows[0];
+    let lessonPlan = await runQuery(`SELECT topicd FROM tlsnpln WHERE id='${data.topic}}'`)
+    let subtopics = await runQuery(`SELECT id,sub_topic FROM tlsnpln WHERE scode='${subjectDetails.scode}' AND sname='${subjectDetails.sname}' AND
+    fname='${subjectDetails.fname}' AND sem='${subjectDetails.sem}' AND dv='${subjectDetails.dv}' AND dept='${subjectDetails.dept}' AND did='${subjectDetails.did}' AND topicd='${lessonPlan[0].topicd}' AND (status='' or status='Not Complete') AND sub_topic!=''`);
+    
+    let option = `<option value=''>Select sub topic</option>`;
+    let a= 0;
+
+    for (let i = 0; i < subtopics.length; i++) {
+        const element = subtopics[i];
+        option+=`<option value='${element.id}'>${element.sub_topic}</option>`;
+        a++;
+    }
+
+    if(a == 0){
+        option = `<option value='0'>No sub topic</option>`;
+    }
+    // console.log(option)
+    res.send(option)
 });

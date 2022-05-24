@@ -14,16 +14,25 @@ export default function Attendance(props) {
     const [date, setDate] = useState("");
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
-    const [lessonPlan, setLessonPlan] = useState([{ topic: '', subTopic: '', status: '' }]);
+    const [lessonPlan, setLessonPlan] = useState([{ topic: '', subTopic: '', status: '',subTopicOption: '<option value="">Sub Topic Is Optional</option>'}]);
     const [topicOption, setTopicOption] = useState(`<option value="">Select Topic</option>`);
-    const handleFormChange = (event, index) => {
+    const handleFormChange = async (event, index) => {
         let data = [...lessonPlan];
         data[index][event.target.name] = event.target.value;
+        
+        if(event.target.name == "topic"){
+            await axios.post(`${props.baseURL}/getsubtopic`, {
+                subject,topic:event.target.value
+            })
+                .then((response) => {
+                    data[index]['subTopicOption'] = response.data;
+                });
+        }
         setLessonPlan(data);
     }
 
     const addLessonPlanFields = () => {
-        let object = { topic: '', subTopic: '', status: '' };
+        let object = { topic: '', subTopic: '', status: '',subTopicOption: '<option value="">Sub Topic Is Optional</option>' };
         setLessonPlan([...lessonPlan, object])
     }
 
@@ -109,9 +118,7 @@ export default function Attendance(props) {
                                     <tr key={index}>
                                         <td><select name="topic" required className="form-control" onChange={event => handleFormChange(event, index)} dangerouslySetInnerHTML={{ __html: topicOption }}>
                                         </select></td>
-                                        <td><select name="subTopic" className="form-control" onChange={event => handleFormChange(event, index)}>
-                                            <option value="">Sub Topic Is Optional</option>
-                                        </select>
+                                        <td><select name="subTopic" className="form-control" onChange={event => handleFormChange(event, index)} dangerouslySetInnerHTML={{ __html: form.subTopicOption }}></select>
                                         </td>
                                         <td><select name="status" required className="form-control" onChange={event => handleFormChange(event, index)}>
                                             <option value="">Select Status</option>
