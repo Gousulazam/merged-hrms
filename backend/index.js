@@ -5228,7 +5228,7 @@ app.post('/updateheader', (req, res) => {
     })
 });
 
-app.post('/getfeedetails', (req, res) => {
+// app.post('/getfeedetails', (req, res) => {
 //     let data = req.body;
 //     let result = ``;
 //     let total_fix; 
