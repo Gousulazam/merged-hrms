@@ -1,4 +1,3 @@
-const mysql = require('mysql');
 const QueryBuilder = require('node-querybuilder');
 const express = require('express');
 const mysql = require('mysql');
