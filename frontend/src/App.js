@@ -67,6 +67,17 @@ import IaMarksEntry from './pages/attainment/IaMarksEntry';
 import MarksEntryIa from './pages/attainment/MarksEntryIa';
 import IaAttainmentSheet from './pages/attainment/IaAttainmentSheet';
 import SheetAttainmentIa from './pages/attainment/SheetAttainmentIa';
+import LabBatchAssign from './pages/subjects/LabBatchAssign';
+import LabBatchAssign1 from './pages/subjects/LabBatchAssign1';
+import SubjectAdd from './pages/subjects/ViewSubDetails/SubjectAdd';
+import StudentInternalR from './pages/subjects/StudentInternalR';
+import StudentInternalR1 from './pages/subjects/StudentInternalR1';
+import GenerateSubject from './pages/subjects/GenerateSubject';
+import EditSubjects from './pages/subjects/EditSubjects';
+import ViewSubjectAss from './pages/subjects/ViewSubjectAss';
+import ViewSubjectAssignedToStdt from './pages/subjects/ViewSubjectAssignedToStdt';
+import SubjectView from './pages/subjects/ViewSubDetails/SubjectView';
+import GetSubjectList from './pages/subjects/ViewSubDetails/GetSubjectList';
 
 
 function App() {
@@ -246,6 +257,17 @@ function App() {
               <Route path="/marksentryia" element={<MarksEntryIa baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/iaattainmentsheet" element={<IaAttainmentSheet baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/sheetattainmentia" element={<SheetAttainmentIa baseURL={baseURL} userDetails={userDetails} loader={loader} />} />
+              <Route path="/labbasgn" element={<LabBatchAssign baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/labbasgn1" element={<LabBatchAssign1 baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/subaddandview" element={<SubjectAdd baseURL={baseURL} userDetails={userDetails} /> } /> 
+              <Route path="/internalrept" element={<StudentInternalR baseURL={baseURL} userDetails={userDetails} /> } /> 
+              <Route path="/internalrept1" element={<StudentInternalR1 baseURL={baseURL} userDetails={userDetails} /> } /> 
+              <Route path="/generatesubjects" element={<GenerateSubject baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/editsubjects" element={<EditSubjects baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/viewsubjectassign" element={<ViewSubjectAss baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/viewsubstdass" element={<ViewSubjectAssignedToStdt baseURL={baseURL}/>} />
+              <Route path="/subjectview" element={<SubjectView baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/getsubjectlist" element={<GetSubjectList baseURL={baseURL} userDetails={userDetails} /> } />
             </Routes>
           </BrowserRouter>
         </div>
