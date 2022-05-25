@@ -55,7 +55,7 @@ const Getstudentlist = (props) => {
                     <tbody>
                             {
                             studentDetails.map((user, index) => (
-                                <tr className="text-capitalize">
+                                <tr className="text-capitalize" key={index}>
                                     <td>{index+1}</td>
                                     <td>{user.rno}</td>
                                     <td>{user.usn}</td>
