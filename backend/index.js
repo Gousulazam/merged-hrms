@@ -220,6 +220,7 @@ app.post('/getsubjectoptionbyfidandacademicyear', async (req, res) => {
 app.post('/getsubjectdetailbyid', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`SELECT sname,scode,sem,cid,dept,academic_year,fid,did,dv,(SELECT iname FROM college WHERE id=s.cid) as iname,(SELECT sname FROM dept WHERE id=s.did) AS dsname FROM subject s WHERE id='${data.id}'`);
+   // console.log(rows[0]);
     res.send(rows[0]);
 
     // mysqlConnection.query('SELECT sname,scode,sem,cid,dept,academic_year,(SELECT iname FROM `college` WHERE id=s.cid) as iname FROM `subject` s WHERE id=?', [data.id], (err, rows, fields) => {
@@ -4118,11 +4119,12 @@ app.post('/getmoduleoption', async (req, res) => {
  
     if (rows.length > 0) {
         let subjectDetails = rows[0];
+       // console.log(`SELECT mdno from tlsnpln where fid='${data.fid}' AND scode='${subjectDetails.scode}' AND dv='${subjectDetails.dv}' AND academic_year='${data.academicYear}' GROUP BY mdno`);
         let rows1 = await runQuery(`SELECT mdno from tlsnpln where fid='${data.fid}' AND scode='${subjectDetails.scode}' AND dv='${subjectDetails.dv}' AND academic_year='${data.academicYear}' GROUP BY mdno `);
-  
+  //console.log(rows1.length);
         if (rows1.length > 0) {
             for (let index = 0; index < rows1.length; index++) {
-                option += `<option value="${rows[index].mdno}">${rows[index].mdno}</option>`;
+                option += `<option value="${rows1[index].mdno}">${rows1[index].mdno}</option>`;
                 
             }
             option +='<option value="all">All</option>';
@@ -4178,7 +4180,7 @@ app.post('/getlsnplndetails', async (req, res) => {
         let subjectDetails = rows[0];
         if(mdno == 'all'){
       
-        let rows1 = await runQuery(`SELECT planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' Order By mdno `);
+        let rows1 = await runQuery(`SELECT planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' Order By mdno `);
             if (rows1.length> 0) {
                 res.send(rows1);
             } else {
@@ -4187,7 +4189,7 @@ app.post('/getlsnplndetails', async (req, res) => {
        
     } else{
       
-        let rows2 = await runQuery(`SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln where fid='${data.fid}' and did='${subjectDetails.did}' and mdno='${mdno}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' `);
+        let rows2 = await runQuery(`SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and mdno='${mdno}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' `);
             if (rows2.length > 0) {
                 res.send(rows2);
             } else {
@@ -4613,62 +4615,62 @@ app.post('/updateheader', (req, res) => {
 });
 
 app.post('/getfeedetails', (req, res) => {
-    let data = req.body;
-    let result = ``;
-    let total_fix;
-    let total_pay;  
-    let fee_paid;  
-    let   rows=await db.query(`select * from fee_fixation where student_id='${data.usn}' group by year order by year `)
-    let array1 = [];
+//     let data = req.body;
+//     let result = ``;
+//     let total_fix; 
+//     let total_pay;  
+//     let fee_paid;  
+//     let   rows=await db.query(`select * from fee_fixation where student_id='${data.usn}' group by year order by year `)
+//     let array1 = [];
     
-    for(let index=0; index<rows.length; index++){  
-     // array1 = {'year':rows[index].year};
-    //  console.log('nn'+array1);
+//     for(let index=0; index<rows.length; index++){  
+//      // array1 = {'year':rows[index].year};
+//     //  console.log('nn'+array1);
       
-    let year = rows[index].year;
-    let   res=await db.query(`select *, (select sum(fee) from fee_fixation where student_id='${data.usn}' and year='${year}')as total_fix_fee, (select sum(paid_fee) from fee_transaction where student_id='${data.usn}' and year='${year}')as total_paid_fee, (select distinct student_id from fee_transaction where student_id='${data.usn}' and year='${year}')as pay  from fee_fixation as f where student_id='${data.usn}' and year='${year}' `)
-     result += ` <tr>
-      <td rowspan='${res.length+1}'>${year}</td>`;
+//     let year = rows[index].year;
+//     let   res=await db.query(`select *, (select sum(fee) from fee_fixation where student_id='${data.usn}' and year='${year}')as total_fix_fee, (select sum(paid_fee) from fee_transaction where student_id='${data.usn}' and year='${year}')as total_paid_fee, (select distinct student_id from fee_transaction where student_id='${data.usn}' and year='${year}')as pay  from fee_fixation as f where student_id='${data.usn}' and year='${year}' `)
+//      result += ` <tr>
+//       <td rowspan='${res.length+1}'>${year}</td>`;
      
-         for(let i=0; i<res.length; i++){           
-          array1[year]=res[i];
-          if(!res[i].pay){
-          fee_paid = 0;
-          }else{
-          let pay_fee = await db.query(`select  sum(paid_fee) as fee_paid from fee_transaction where student_id='${data.usn}' and year='${res[i].year}' and header_name='${res[i].header_name}'  `);
-          const element = pay_fee[index];
-          fee_paid = element.fee_paid;
-         // array1[year][i].total_paid_fee=element.fee_paid;
-         console.log(array1[year][i]);
-          }
-          result += `   
-                     <td>${res[i].header_name}</td>
-                      <td>${res[i].fee}</td>
-                      <td>${fee_paid}</td>
-                      <td>${res[i].fee - fee_paid}</td>`;
-                      // <td>${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :'<input type="text" style="width:30%;float:left" class="form-control" name="recno[]" id="recno" placeholder="Receipt no"><input type="date" style="width:30%;float:left" id="pdate" name="pdate[]" class="form-control"><input type="number" style="width:30%;" class="form-control" name="amount[]" id="amount" placeholder="Enter Amount">'}</td>
-                       result += ` <td>
-                       ${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :`<Link to='/addfee' className='btn btn-primary'> Pay </Link>`}
-                       </td>
-                       </tr>`;
-                      total_fix = res[i].total_fix_fee;
-                      total_pay = res[i].total_paid_fee;
-         } 
-         if(!total_pay){
-           total_pay=0;
-         }
-         result +=`<tr>
-                  <td>Total</td>
-                  <td>${total_fix}</td>
-                  <td>${total_pay}</td>
-                  <td>${total_fix - total_pay}</td>
-                  <td></td>
-                  </tr><br/>`;       
-        // result +=`<tr><td class='text-center' colspan='6' ><button class='btn btn-primary' onClick={add()} >Submit </button></td></tr>`
-}   
-//console.log(array1);
-            res.send(result);  
-          //  console.log(result) ;   
+//          for(let i=0; i<res.length; i++){           
+//           array1[year]=res[i];
+//           if(!res[i].pay){
+//           fee_paid = 0;
+//           }else{
+//           let pay_fee = await db.query(`select  sum(paid_fee) as fee_paid from fee_transaction where student_id='${data.usn}' and year='${res[i].year}' and header_name='${res[i].header_name}'  `);
+//           const element = pay_fee[index];
+//           fee_paid = element.fee_paid;
+//          // array1[year][i].total_paid_fee=element.fee_paid;
+//          console.log(array1[year][i]);
+//           }
+//           result += `   
+//                      <td>${res[i].header_name}</td>
+//                       <td>${res[i].fee}</td>
+//                       <td>${fee_paid}</td>
+//                       <td>${res[i].fee - fee_paid}</td>`;
+//                       // <td>${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :'<input type="text" style="width:30%;float:left" class="form-control" name="recno[]" id="recno" placeholder="Receipt no"><input type="date" style="width:30%;float:left" id="pdate" name="pdate[]" class="form-control"><input type="number" style="width:30%;" class="form-control" name="amount[]" id="amount" placeholder="Enter Amount">'}</td>
+//                        result += ` <td>
+//                        ${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :`<Link to='/addfee' className='btn btn-primary'> Pay </Link>`}
+//                        </td>
+//                        </tr>`;
+//                       total_fix = res[i].total_fix_fee;
+//                       total_pay = res[i].total_paid_fee;
+//          } 
+//          if(!total_pay){
+//            total_pay=0;
+//          }
+//          result +=`<tr>
+//                   <td>Total</td>
+//                   <td>${total_fix}</td>
+//                   <td>${total_pay}</td>
+//                   <td>${total_fix - total_pay}</td>
+//                   <td></td>
+//                   </tr><br/>`;       
+//         // result +=`<tr><td class='text-center' colspan='6' ><button class='btn btn-primary' onClick={add()} >Submit </button></td></tr>`
+// }   
+// //console.log(array1);
+//             res.send(result);  
+//           //  console.log(result) ;   
 
 });
 

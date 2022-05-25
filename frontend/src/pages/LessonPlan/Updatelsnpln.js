@@ -28,8 +28,8 @@ export const Updatelsnpln = (props) => {
             id: state.subject
         })
             .then((response) => {  
-                setSubjectDetails(response.data[0]);
-                console.log(response.data[0])
+                setSubjectDetails(response.data);
+                console.log(response.data)
             });
 
     }, [])
@@ -56,12 +56,14 @@ export const Updatelsnpln = (props) => {
 
     let id;
     const editlsnpln = (e) => {
+       // e.preventDefault();
         id=e;
         move("/editlsnpln", { state: {id} });
         }
 
-
+ 
     const dellp = (e) =>{
+        //e.preventDefault();
         //alert(e);
         
         confirmAlert({
@@ -81,6 +83,7 @@ export const Updatelsnpln = (props) => {
          }
 
         const del = (e)=>{
+          //  e.preventDefault();
              axios.post(`${props.baseURL}/deletelsnpln`, {
                     id: e,
                 }) 

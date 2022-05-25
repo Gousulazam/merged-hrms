@@ -20,8 +20,8 @@ export const Viewlsnpln = (props) => {
                 id: state.subject
             })
                 .then((response) => {  
-                    setSubjectDetails(response.data[0]);
-                    console.log(response.data[0])
+                    setSubjectDetails(response.data);
+                    console.log(response.data)
                 });
     
         }, [])

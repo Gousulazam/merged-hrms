@@ -97,7 +97,7 @@ import {Addqp} from './pages/Internal_Assessment/Addqp';
 import {Edit} from './pages/Internal_Assessment/Edit'; 
 import {EditQuestions} from './pages/Internal_Assessment/EditQuestions'; 
 import {Headers} from './pages/Newfees/headers'; 
-import {Addheader} from './pages/Newfee/Addheader'; 
+import {Addheader} from './pages/Newfees/Addheader'; 
 import {Editheader} from './pages/Newfees/Editheader'; 
 import {Usnwise} from './pages/Newfees/usnwise';
 import {Payusnwise} from './pages/Newfees/Payusnwise';
