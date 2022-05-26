@@ -124,6 +124,8 @@ export default function Addattendance(props) {
   const [subjectDetails, setSubjectDetails] = useState("");
   const [list, setList] = useState([]);
   const [button, setbutton] = useState([]);
+  const [pCount, setpCount] = useState(0);
+  const [aCount, setaCount] = useState(0);
   let dataNew = [{ student_id: "", scode: "", classes: "", values: "", text: "" }];
 
   useEffect(() => {
@@ -142,9 +144,9 @@ export default function Addattendance(props) {
 
         setList(response.data);
 
+        setpCount(response.data.length)
         for (let i = 0; i < response.data.length; i++) {
           const element = response.data[i];
-
           dataNew[i] = { student_id: element.student_id, scode: element.scd, classes: 1, values: 1, text: "P" };
           setbutton(dataNew);
         }
@@ -201,7 +203,8 @@ console.log(state.lessonPlan)
       e.target.innerText = "Absent";
       e.target.value = 0;
       e.target.className = "btn btn-danger rounded";
-
+      setaCount(aCount+1);
+      setpCount(pCount-1);
       // setState1({
       //   title:"Absent",
       //   vlv:0,
@@ -215,7 +218,8 @@ console.log(state.lessonPlan)
       e.target.innerText = "Present";
       e.target.className = "btn btn-success rounded";
       //state1.title = "Absent";
-
+      setaCount(aCount-1);
+      setpCount(pCount+1);
       // setState1({
       //   title: "Present",
       //   vlv:1,
@@ -257,7 +261,7 @@ console.log(state.lessonPlan)
             <thead className="thead-dark text-center">
               <tr className="text-uppercase">
                 <th className="text-center">total</th>
-                <th colSpan="3">present : <span id="presentCount">{list.length}</span> <span className="float-right mr-5">absent : <span id="absentCount">0</span> </span></th>
+                <th colSpan="3">present : <span id="presentCount">{pCount}</span> <span className="float-right mr-5">absent : <span id="absentCount">{aCount}</span> </span></th>
               </tr>
               <tr className="text-uppercase">
                 <th className="text-center">Sl No</th>
