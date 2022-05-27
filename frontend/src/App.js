@@ -124,6 +124,7 @@ import Viewadmissionform from './pages/Student-module/Viewadmissionform';
 import AssingWorkload from './workload/AssingWorkload';
 import GetWorkloadReport from './workload/GetWorkloadReport';
 import WorkLoadReport from './workload/WorkLoadReport';
+import { AddCwf } from './pages/CWF/AddCwf';
 
 
 function App() {
@@ -379,6 +380,7 @@ function App() {
               <Route path="/transaction" element={<Transaction baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/edittransaction" element={<EditTransaction baseURL={baseURL} userDetails={userDetails} />} />
               {/* Humera Module End */}
+              <Route path="/addcwf" element={<AddCwf baseURL={baseURL} userDetails={userDetails} />} />
 
             </Routes>
           </BrowserRouter>
