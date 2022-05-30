@@ -256,7 +256,7 @@ app.post('/getsubjectoptionbyfidandacademicyear', async (req, res) => {
 app.post('/getsubjectdetailbyid', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`SELECT sname,scode,sem,cid,dept,academic_year,fid,did,dv,(SELECT iname FROM college WHERE id=s.cid) as iname,(SELECT sname FROM dept WHERE id=s.did) AS dsname FROM subject s WHERE id='${data.id}'`);
-   // console.log(rows[0]);
+    // console.log(rows[0]);
     res.send(rows[0]);
 
     // mysqlConnection.query('SELECT sname,scode,sem,cid,dept,academic_year,(SELECT iname FROM `college` WHERE id=s.cid) as iname FROM `subject` s WHERE id=?', [data.id], (err, rows, fields) => {
@@ -1215,7 +1215,7 @@ app.post('/getsubjectreportdetails', async (req, res) => {
                 <td>${studentDetails['name']}</td>`;
         let classAttended = 0;
         for (let j = 0; j < classTaken.length; j++) {
-            let date = formatDate('db',classTaken[j]['date']);
+            let date = formatDate('db', classTaken[j]['date']);
             let status = ``;
             let checkAttendance = await runQuery(`SELECT atn FROM attend WHERE student_id='${studentDetails['student_id']}' AND scd='${subjectDetails.scode}' AND sem='${subjectDetails.sem}' AND dv='${subjectDetails.dv}' AND academic_year='${subjectDetails.academic_year}' AND date='${date}'`)
             if (checkAttendance.length > 0) {
@@ -1230,7 +1230,7 @@ app.post('/getsubjectreportdetails', async (req, res) => {
             }
             tbody += `<td>${status}</td>`;
             if (i == 0) {
-                dateTr += `<th>${formatDate('',date)}</th>`;
+                dateTr += `<th>${formatDate('', date)}</th>`;
                 countTr += `<th>${j + 1}</th>`;
             }
         }
@@ -4052,87 +4052,87 @@ app.post('/addco', async (req, res) => {
     }
 });
 
-app.post('/getDbAcademicYear2',(req,res) => {
+app.post('/getDbAcademicYear2', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('SELECT MAX(academic_year) AS academicYear FROM `academic_year` WHERE cid=?',[data.cid] , (err,rows) =>{
-        if(!err){
+    mysqlConnection.query('SELECT MAX(academic_year) AS academicYear FROM `academic_year` WHERE cid=?', [data.cid], (err, rows) => {
+        if (!err) {
             let option = `<option value="">Select Academic Year</option>`;
-                for (let index = 0; index < rows.length; index++) {
-                    option += `<option value="${rows[index].academicYear}">${rows[index].academicYear}</option>`
-                }
-                res.send(option);
+            for (let index = 0; index < rows.length; index++) {
+                option += `<option value="${rows[index].academicYear}">${rows[index].academicYear}</option>`
+            }
+            res.send(option);
         } else {
             console.log(err);
         }
-    } )
-    });
+    })
+});
 
-    app.post('/getdepartmentoption', async (req, res) => {
-        let data = req.body;
-        let rows = await runQuery(`SELECT  name,id from dept where cid='${data.cid}' and academic='1' ORDER BY id ASC`)
-        let option = `<option value= "" >Select Department</option>`;
-        for (let index = 0; index < rows.length; index++) {
-                        option += `<option value="${rows[index].id}">${rows[index].name}</option>`
-                    }
-                    res.send(option);
-    
-        // mysqlConnection.query('SELECT  name,id from dept where cid=? and academic=? ORDER BY id ASC', [data.cid,'1'], (err, rows, fields) => {
-        //     if (!err) {
-        //         let option = `<option value= "" >Select Department</option>`;
-        //         for (let index = 0; index < rows.length; index++) {
-        //             option += `<option value="${rows[index].id}">${rows[index].name}</option>`
-        //         }
-        //         res.send(option);
-        //     } else {
-        //         console.log(err);
-        //     }
-        // })
-    });
+app.post('/getdepartmentoption', async (req, res) => {
+    let data = req.body;
+    let rows = await runQuery(`SELECT  name,id from dept where cid='${data.cid}' and academic='1' ORDER BY id ASC`)
+    let option = `<option value= "" >Select Department</option>`;
+    for (let index = 0; index < rows.length; index++) {
+        option += `<option value="${rows[index].id}">${rows[index].name}</option>`
+    }
+    res.send(option);
 
-    app.post('/getdepartmentoptionbyid', async (req, res) => {
-        let data = req.body;
-        let rows = await runQuery(`SELECT  name from dept where cid='${data.cid}' and academic='1'  and id='${data.did}' ORDER BY id ASC`)
-        let option = `<option value= "" >Select Department</option>`;
-                for (let index = 0; index < rows.length; index++) {
-                    option += `<option value="${rows[index].id}">${rows[index].name}</option>`
-                }
-                res.send(option);
-    
-        // mysqlConnection.query('SELECT  name from dept where cid=? and academic=?  and id=? ORDER BY id ASC', [data.cid,'1', data.id], (err, rows, fields) => {
-        //     if (!err) {
-        //         let option = `<option value= "" >Select Department</option>`;
-        //         for (let index = 0; index < rows.length; index++) {
-        //             option += `<option value="${rows[index].id}">${rows[index].name}</option>`
-        //         }
-        //         res.send(option);
-        //     } else {
-        //         console.log(err);
-        //     }
-        // })
-    });
+    // mysqlConnection.query('SELECT  name,id from dept where cid=? and academic=? ORDER BY id ASC', [data.cid,'1'], (err, rows, fields) => {
+    //     if (!err) {
+    //         let option = `<option value= "" >Select Department</option>`;
+    //         for (let index = 0; index < rows.length; index++) {
+    //             option += `<option value="${rows[index].id}">${rows[index].name}</option>`
+    //         }
+    //         res.send(option);
+    //     } else {
+    //         console.log(err);
+    //     }
+    // })
+});
 
-    app.post('/getsubjectlists',(req,res) => {
-        let data = req.body;
-        
-        mysqlConnection.query('SELECT *, (SELECT DISTINCT(usn) FROM `sub_info` WHERE student_id=s.student_id and academic_year=s.academic_year and usn!=0) as usn FROM `student_academic` s WHERE s.academic_year=? and s.sem=? and s.dv=? and s.did=? ORDER BY `usn` ASC',[data.academicYear,data.sem,data.dv,data.did] , async (err,rows,fields) => {
-            if (!err) {
-                 let orderBy = ``;
-                  let studentDetails = rows[0];
-                  if(studentDetails['did'] == 6){
-                      orderBy = `ORDER BY substr(scd,-1) ASC`;
-                  } else if(studentDetails['did'] == 7){
-                      orderBy = `ORDER BY id ASC`;
-                  } else {
-                      orderBy = `GROUP BY si.student_id `;
-                  }
-                
-                // let studentList = await promisePool.query(`SELECT student_id,usn, name IN(select name from sub_info where  sem='${studentDetails.sem}' and academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}') ,sem,did,(select scd from sub_info where AND sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}'  GROUP BY  scd  limit 0,1) as scd1, (select scd from sub_info where sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY scd limit 1 ,1 ) as scd2 , (select scd from sub_info where sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 2,1) as scd3 ,(select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 3,1) as scd4, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 4,1) as scd5, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 5,1) as scd6, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 6,1) as scd7, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 7,1) as scd8, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 8,1) as scd9, batch FROM sub_info WHERE cid='${studentDetails.cid}' AND did='${studentDetails.did}' AND sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' GROUP BY student_id ASC`)
-                 let studentList = await promisePool.query(`SELECT DISTINCT si.usn,p.student_id ,si.name, (select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 0 ) as scd1 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 1 ) as scd2 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 2 ) as scd3 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 3 ) as scd4 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 4 ) as scd5 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 5 ) as scd6 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 6 ) as scd7 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 7 ) as scd8, batch  FROM sub_info p INNER JOIN student_info si ON p.student_id=si.student_id where p.did='${studentDetails.did}' AND p.academic_year='${studentDetails.academic_year}' AND  sem='${studentDetails.sem}' ${orderBy}`)
-                 let tbody = ``;
-                 for (let i = 0; i < studentList[0].length; i++){
-                   const stdDetails = studentList[0][i];
-                   
-                    tbody += `<tr style="font-weight:normal">
+app.post('/getdepartmentoptionbyid', async (req, res) => {
+    let data = req.body;
+    let rows = await runQuery(`SELECT  name from dept where cid='${data.cid}' and academic='1'  and id='${data.did}' ORDER BY id ASC`)
+    let option = `<option value= "" >Select Department</option>`;
+    for (let index = 0; index < rows.length; index++) {
+        option += `<option value="${rows[index].id}">${rows[index].name}</option>`
+    }
+    res.send(option);
+
+    // mysqlConnection.query('SELECT  name from dept where cid=? and academic=?  and id=? ORDER BY id ASC', [data.cid,'1', data.id], (err, rows, fields) => {
+    //     if (!err) {
+    //         let option = `<option value= "" >Select Department</option>`;
+    //         for (let index = 0; index < rows.length; index++) {
+    //             option += `<option value="${rows[index].id}">${rows[index].name}</option>`
+    //         }
+    //         res.send(option);
+    //     } else {
+    //         console.log(err);
+    //     }
+    // })
+});
+
+app.post('/getsubjectlists', (req, res) => {
+    let data = req.body;
+
+    mysqlConnection.query('SELECT *, (SELECT DISTINCT(usn) FROM `sub_info` WHERE student_id=s.student_id and academic_year=s.academic_year and usn!=0) as usn FROM `student_academic` s WHERE s.academic_year=? and s.sem=? and s.dv=? and s.did=? ORDER BY `usn` ASC', [data.academicYear, data.sem, data.dv, data.did], async (err, rows, fields) => {
+        if (!err) {
+            let orderBy = ``;
+            let studentDetails = rows[0];
+            if (studentDetails['did'] == 6) {
+                orderBy = `ORDER BY substr(scd,-1) ASC`;
+            } else if (studentDetails['did'] == 7) {
+                orderBy = `ORDER BY id ASC`;
+            } else {
+                orderBy = `GROUP BY si.student_id `;
+            }
+
+            // let studentList = await promisePool.query(`SELECT student_id,usn, name IN(select name from sub_info where  sem='${studentDetails.sem}' and academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}') ,sem,did,(select scd from sub_info where AND sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}'  GROUP BY  scd  limit 0,1) as scd1, (select scd from sub_info where sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY scd limit 1 ,1 ) as scd2 , (select scd from sub_info where sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 2,1) as scd3 ,(select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 3,1) as scd4, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 4,1) as scd5, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 5,1) as scd6, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 6,1) as scd7, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 7,1) as scd8, (select scd from sub_info where  sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' AND did='${studentDetails.did}' GROUP BY  scd asc limit 8,1) as scd9, batch FROM sub_info WHERE cid='${studentDetails.cid}' AND did='${studentDetails.did}' AND sem='${studentDetails.sem}' AND academic_year='${studentDetails.academic_year}' GROUP BY student_id ASC`)
+            let studentList = await promisePool.query(`SELECT DISTINCT si.usn,p.student_id ,si.name, (select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 0 ) as scd1 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 1 ) as scd2 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 2 ) as scd3 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 3 ) as scd4 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 4 ) as scd5 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 5 ) as scd6 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 6 ) as scd7 ,(select scd from sub_info where student_id=p.student_id AND academic_year=p.academic_year AND dv=p.dv AND sem=p.sem AND did=p.did order by scd asc limit 1 offset 7 ) as scd8, batch  FROM sub_info p INNER JOIN student_info si ON p.student_id=si.student_id where p.did='${studentDetails.did}' AND p.academic_year='${studentDetails.academic_year}' AND  sem='${studentDetails.sem}' ${orderBy}`)
+            let tbody = ``;
+            for (let i = 0; i < studentList[0].length; i++) {
+                const stdDetails = studentList[0][i];
+
+                tbody += `<tr style="font-weight:normal">
                         <td>${i + 1}</td>
                        <td>${stdDetails['usn']}</td>
                        <td>${stdDetails['student_id']}</td>
@@ -4145,50 +4145,50 @@ app.post('/getDbAcademicYear2',(req,res) => {
                        <td>${stdDetails['scd6']}</td>
                        <td>${stdDetails['scd7']}</td>
                        <td>${stdDetails['scd8']}</td>`;
-                
-                 let batchlist = await promisePool.query(`select * from sub_info where  student_id='${stdDetails['student_id']}' and  batch!='' AND dv='${studentDetails.dv}' AND academic_year='${studentDetails.academic_year}'`)
-                 let batching = ``;
-                 for (let j = 0; j < batchlist[0].length; j++) {
-                     const element = batchlist[0][j];
-                     batching = element.batch;
-                 }
-               tbody += `<td>${batching}</td></tr>`;      
-                 } 
-                res.send([tbody]);
-    
-            } else {
-                console.log(err);
-            }
-        });
-    });
 
-    app.post('/getdepartmentdetailbyid', async (req,res) => {
-        let data =req.body;
-        // let rows = await runQuery(`select * from dept where id='${data.cid}'`)
-        // res.send(rows);
-    
-        mysqlConnection.query('select * from dept where id=?',[data.cid], (err,rows,fields) => {
-            if (!err) {
-                res.send(rows);
-            } else {
-                console.log(err);
+                let batchlist = await promisePool.query(`select * from sub_info where  student_id='${stdDetails['student_id']}' and  batch!='' AND dv='${studentDetails.dv}' AND academic_year='${studentDetails.academic_year}'`)
+                let batching = ``;
+                for (let j = 0; j < batchlist[0].length; j++) {
+                    const element = batchlist[0][j];
+                    batching = element.batch;
+                }
+                tbody += `<td>${batching}</td></tr>`;
             }
-        })
+            res.send([tbody]);
+
+        } else {
+            console.log(err);
+        }
     });
-    
-    app.post('/getsubjdetaillists',  (req,res) => {
-        let data = req.body;
-    
-        mysqlConnection.query('SELECT DISTINCT(dv) FROM subject WHERE did=? and academic_year=? and sem=?  ORDER BY dv,sname', [data.did,data.academicYear,data.sem], async (err,rows) => {
-            if(!err){
-                let tbody = ``;
-                let table = ``;
-                let dvDetails = rows;
-                for (let k = 0; k < dvDetails.length; k++) {
-                    const dvs = dvDetails[k];
-                  //  console.log(`select * from subject where did='${data.did}' and academic_year='${data.academicYear}' and sem='${data.sem}' and dv='${dvs.dv}'  ORDER BY scode  `)
-                   let subTable = await promisePool.query(`select * from subject where did='${data.did}' and academic_year='${data.academicYear}' and sem='${data.sem}' and dv='${dvs.dv}'  ORDER BY scode`)
-                               table += `<table class="table table-bordered text-center"><br/>
+});
+
+app.post('/getdepartmentdetailbyid', async (req, res) => {
+    let data = req.body;
+    // let rows = await runQuery(`select * from dept where id='${data.cid}'`)
+    // res.send(rows);
+
+    mysqlConnection.query('select * from dept where id=?', [data.cid], (err, rows, fields) => {
+        if (!err) {
+            res.send(rows);
+        } else {
+            console.log(err);
+        }
+    })
+});
+
+app.post('/getsubjdetaillists', (req, res) => {
+    let data = req.body;
+
+    mysqlConnection.query('SELECT DISTINCT(dv) FROM subject WHERE did=? and academic_year=? and sem=?  ORDER BY dv,sname', [data.did, data.academicYear, data.sem], async (err, rows) => {
+        if (!err) {
+            let tbody = ``;
+            let table = ``;
+            let dvDetails = rows;
+            for (let k = 0; k < dvDetails.length; k++) {
+                const dvs = dvDetails[k];
+                //  console.log(`select * from subject where did='${data.did}' and academic_year='${data.academicYear}' and sem='${data.sem}' and dv='${dvs.dv}'  ORDER BY scode  `)
+                let subTable = await promisePool.query(`select * from subject where did='${data.did}' and academic_year='${data.academicYear}' and sem='${data.sem}' and dv='${dvs.dv}'  ORDER BY scode`)
+                table += `<table class="table table-bordered text-center"><br/>
                     <thead class="thead-dark">
                         <tr>      
                         </tr>
@@ -4201,147 +4201,147 @@ app.post('/getDbAcademicYear2',(req,res) => {
             </tr>        
                     </thead>
                     <tbody>`;
-                    for (let i = 0; i < subTable[0].length; i++) {
-                        const element = subTable[0][i];
-                        let btch = element.batch;
-                        let sl = i+1;
-                        
+                for (let i = 0; i < subTable[0].length; i++) {
+                    const element = subTable[0][i];
+                    let btch = element.batch;
+                    let sl = i + 1;
+
                     table += `<tr style="font-weight:bold">
                     <td>${sl}</td>`;
-                    if(btch != ''){
-                      table += `<td>${element['sname']} (${element['batch']})</td>`;
+                    if (btch != '') {
+                        table += `<td>${element['sname']} (${element['batch']})</td>`;
                     } else {
                         table += `<td>${element['sname']}</td>`;
-                       }
+                    }
                     table += `<td>${element['scode']}</td>
                    <td>${element['fname']}</td>
                    <td>${element['dv']}</td>
                          </tr>`;
-                      sl++;    
+                    sl++;
                 }
-              table += `</tbody>
+                table += `</tbody>
                 </table>`;
-                   
-                }
-                    res.send(table);
-                } else {
-                    console.log(err);
-                }  
-        })  
-    });
-    
-    
-    
 
-    app.post('/addsubjects', async (req,res) => {
-        let data = req.body;  
-        let added = 0;
-        let cllgid = data.cid;
-        let rows = await promisePool.query(`SELECT * FROM subject_pre WHERE scode='${data.scode}' AND dv='${data.dv}' and sem='${data.sem}' AND did='${data.dept}' AND academic_year='${data.academic_year}'`)
-               let academic_type = ``;
-               let freeze = ``;
-               let hodApprove = ``;
-               let PrincipalApprove = ``;
-        
-                if(cllgid == 8 || cllgid == 9 || cllgid == 34){
-                   academic_type = 0;
-                   freeze = 1;
-                   hodApprove = 1;
-                   PrincipalApprove =1;
-   
-                } else if(cllgid == 6){
-                   hodApprove = 1;
-                   PrincipalApprove =1;
-                   academic_type = data.academic_type;
-                   freeze = 0;
-   
-                } else {
-                   academic_type = data.academic_type;
-                   freeze = 0;
-                   hodApprove = 0;
-                   PrincipalApprove = 0;
-                }
-               
-          //let scheme = `{substr(data.scode,2)}`;
-            
-           if(rows[0] > ''){
-                console.log('Failed to add!!!! ')
-           } else {
-               
-               let sqlInsert = await promisePool.query(`insert into subject_pre (academic_year,did,sname ,scode ,stype,sem,dv,academic_type,freeze,hodApprove,PrincipalApprove) values('${data.academic_year}','${data.dept}','${data.sname}','${data.scode}','${data.stype}','${data.sem}', '${data.dv}','${academic_type}','${freeze}','${hodApprove}','${PrincipalApprove}')`)
-                added++;
-               //  if(sqlInsert!=1){
-   
-               //      console.log(`Failed to Add the Subject`)
-               //  } else {
-               //      console.log(`Added Successfully`)
-               //  }
-           }   
-              res.send(rows)                  
-              
-           });
-           
-   
-    // /*app.post('/getsubjects', (req,res,row) => {
-    //     let data = req.body;
-    //     var option = `<option value="">Select Subject</option>`;
-   
-    //     mysqlConnection.query(`SELECT DISTINCT id,scode,sname FROM subject  WHERE sem=? AND did=? AND dv=? AND cid=? AND academic_year=? AND stype!='lab' ORDER BY substr(scode,-1) ASC`,[data.sem,data.dept,data.dv,data.cid,data.academic_year], (err,rows) => {
-    //         if (!err) {
-    //             for( let index = 0; index < rows.length; index++){
-    //                 option += `<option value = "${rows[index].scode}">${rows[index].sname}-(${rows[index].scode})</option>`;
-    //             }
-    //             res.send(option);
-                
-    //         } else {
-    //             console.log(err);
-    //         }
-    //     });
-       
-    // });*/
-   
-    app.post('/getbatchoption',async (req,res) => {
-        let data = req.body;
-        //var option = `<option>Select Subjects (Lab)</option>`;
-        let rows = await runQuery(`SELECT DISTINCT id,scode,sname FROM subject  WHERE sem='${data.sem}' AND did='${data.dept}' AND dv='${data.dv}' AND cid='${data.cid}' AND academic_year='${data.academic_year}' AND stype='lab' GROUP BY substr(scode,-1) ASC `)
-        let option = `<option value= "" >Select Subjects (Lab)</option>`;
-        for (let index = 0; index < rows.length; index++) {
-            option += `<option value = "${rows[index].scode}">${rows[index].sname}-(${rows[index].scode})</option>`
-        }
-        res.send(option);
-   
-        // mysqlConnection.query(`SELECT DISTINCT id,scode,sname FROM subject  WHERE sem=? AND did=? AND dv=? AND cid=? AND academic_year=? AND stype='lab' GROUP BY substr(scode,-1) ASC `, [data.sem,data.dept,data.dv,data.cid,data.academic_year],(err,rows) => {
-        //    if (!err) {
-        //        for( let index = 0; index < rows.length; index++){
-        //            option += `<option value = "${rows[index].scode}">${rows[index].sname}-(${rows[index].scode})</option>`;
-        //        }
-        //        res.send(option);
-               
-        //    } else {
-        //        console.log(err);
-        //    }
-        // });
-    });
-
-    app.post('/getsubjectwisestudentlist', async(req,res) => {
-        let data = req.body;
-        let did = req.did;
-        let rows1 = ``;
-        let rows2 = ``;
-        
-        if(did == 6){
-             rows1 = await runQuery(`SELECT  sa.*,si.usn,si.name,sa.id AS sid FROM student_academic sa INNER JOIN student_info si ON sa.student_id = si.student_id WHERE sem='${data.sem}' AND sa.did='${data.dept}' AND dv='${data.dv}' AND sa.cid='${data.cid}' AND sa.academic_year='${data.academic_year}' ORDER BY rno ASC`)
+            }
+            res.send(table);
         } else {
-           rows1 = await runQuery(`SELECT  sa.*,si.usn,si.name,sa.id AS sid FROM student_academic sa INNER JOIN student_info si ON sa.student_id = si.student_id WHERE sem='${data.sem}' AND sa.did='${data.dept}' AND dv='${data.dv}' AND sa.cid='${data.cid}' AND sa.academic_year='${data.academic_year}' ORDER BY si.usn ASC`)
+            console.log(err);
         }
-        res.send(rows1)
-        
-        //select student_id, usn,name,sa.did,sem from sudent_info INNER JOIN student_academic sa ON student_id=sa.student_id where sem=? and sa.did=? and sa.cid=? and academic_year=?
+    })
+});
+
+
+
+
+app.post('/addsubjects', async (req, res) => {
+    let data = req.body;
+    let added = 0;
+    let cllgid = data.cid;
+    let rows = await promisePool.query(`SELECT * FROM subject_pre WHERE scode='${data.scode}' AND dv='${data.dv}' and sem='${data.sem}' AND did='${data.dept}' AND academic_year='${data.academic_year}'`)
+    let academic_type = ``;
+    let freeze = ``;
+    let hodApprove = ``;
+    let PrincipalApprove = ``;
+
+    if (cllgid == 8 || cllgid == 9 || cllgid == 34) {
+        academic_type = 0;
+        freeze = 1;
+        hodApprove = 1;
+        PrincipalApprove = 1;
+
+    } else if (cllgid == 6) {
+        hodApprove = 1;
+        PrincipalApprove = 1;
+        academic_type = data.academic_type;
+        freeze = 0;
+
+    } else {
+        academic_type = data.academic_type;
+        freeze = 0;
+        hodApprove = 0;
+        PrincipalApprove = 0;
+    }
+
+    //let scheme = `{substr(data.scode,2)}`;
+
+    if (rows[0] > '') {
+        console.log('Failed to add!!!! ')
+    } else {
+
+        let sqlInsert = await promisePool.query(`insert into subject_pre (academic_year,did,sname ,scode ,stype,sem,dv,academic_type,freeze,hodApprove,PrincipalApprove) values('${data.academic_year}','${data.dept}','${data.sname}','${data.scode}','${data.stype}','${data.sem}', '${data.dv}','${academic_type}','${freeze}','${hodApprove}','${PrincipalApprove}')`)
+        added++;
+        //  if(sqlInsert!=1){
+
+        //      console.log(`Failed to Add the Subject`)
+        //  } else {
+        //      console.log(`Added Successfully`)
+        //  }
+    }
+    res.send(rows)
+
+});
+
+
+// /*app.post('/getsubjects', (req,res,row) => {
+//     let data = req.body;
+//     var option = `<option value="">Select Subject</option>`;
+
+//     mysqlConnection.query(`SELECT DISTINCT id,scode,sname FROM subject  WHERE sem=? AND did=? AND dv=? AND cid=? AND academic_year=? AND stype!='lab' ORDER BY substr(scode,-1) ASC`,[data.sem,data.dept,data.dv,data.cid,data.academic_year], (err,rows) => {
+//         if (!err) {
+//             for( let index = 0; index < rows.length; index++){
+//                 option += `<option value = "${rows[index].scode}">${rows[index].sname}-(${rows[index].scode})</option>`;
+//             }
+//             res.send(option);
+
+//         } else {
+//             console.log(err);
+//         }
+//     });
+
+// });*/
+
+app.post('/getbatchoption', async (req, res) => {
+    let data = req.body;
+    //var option = `<option>Select Subjects (Lab)</option>`;
+    let rows = await runQuery(`SELECT DISTINCT id,scode,sname FROM subject  WHERE sem='${data.sem}' AND did='${data.dept}' AND dv='${data.dv}' AND cid='${data.cid}' AND academic_year='${data.academic_year}' AND stype='lab' GROUP BY substr(scode,-1) ASC `)
+    let option = `<option value= "" >Select Subjects (Lab)</option>`;
+    for (let index = 0; index < rows.length; index++) {
+        option += `<option value = "${rows[index].scode}">${rows[index].sname}-(${rows[index].scode})</option>`
+    }
+    res.send(option);
+
+    // mysqlConnection.query(`SELECT DISTINCT id,scode,sname FROM subject  WHERE sem=? AND did=? AND dv=? AND cid=? AND academic_year=? AND stype='lab' GROUP BY substr(scode,-1) ASC `, [data.sem,data.dept,data.dv,data.cid,data.academic_year],(err,rows) => {
+    //    if (!err) {
+    //        for( let index = 0; index < rows.length; index++){
+    //            option += `<option value = "${rows[index].scode}">${rows[index].sname}-(${rows[index].scode})</option>`;
+    //        }
+    //        res.send(option);
+
+    //    } else {
+    //        console.log(err);
+    //    }
+    // });
+});
+
+app.post('/getsubjectwisestudentlist', async (req, res) => {
+    let data = req.body;
+    let did = req.did;
+    let rows1 = ``;
+    let rows2 = ``;
+
+    if (did == 6) {
+        rows1 = await runQuery(`SELECT  sa.*,si.usn,si.name,sa.id AS sid FROM student_academic sa INNER JOIN student_info si ON sa.student_id = si.student_id WHERE sem='${data.sem}' AND sa.did='${data.dept}' AND dv='${data.dv}' AND sa.cid='${data.cid}' AND sa.academic_year='${data.academic_year}' ORDER BY rno ASC`)
+    } else {
+        rows1 = await runQuery(`SELECT  sa.*,si.usn,si.name,sa.id AS sid FROM student_academic sa INNER JOIN student_info si ON sa.student_id = si.student_id WHERE sem='${data.sem}' AND sa.did='${data.dept}' AND dv='${data.dv}' AND sa.cid='${data.cid}' AND sa.academic_year='${data.academic_year}' ORDER BY si.usn ASC`)
+    }
+    res.send(rows1)
+
+    //select student_id, usn,name,sa.did,sem from sudent_info INNER JOIN student_academic sa ON student_id=sa.student_id where sem=? and sa.did=? and sa.cid=? and academic_year=?
     //    if(did === 6){
     //     mysqlConnection.query(`SELECT  sa.*,si.usn,si.name,sa.id AS sid FROM student_academic sa INNER JOIN student_info si ON sa.student_id = si.student_id WHERE sem=? AND sa.did=? AND dv=? AND sa.cid=? AND sa.academic_year=? ORDER BY rno ASC`,[data.sem,data.dept,data.dv,data.cid,data.academic_year], (err,rows) => {
     //         if(!err) {
     //             res.send(rows);
-               
+
     //         } else {
     //             console.log(err);
     //         }
@@ -4350,114 +4350,114 @@ app.post('/getDbAcademicYear2',(req,res) => {
     //        mysqlConnection.query(`SELECT  sa.*,si.usn,si.name,sa.id AS sid FROM student_academic sa INNER JOIN student_info si ON sa.student_id = si.student_id WHERE sem=? AND sa.did=? AND dv=? AND sa.cid=? AND sa.academic_year=? ORDER BY si.usn ASC`,[data.sem,data.dept,data.dv,data.cid,data.academic_year], (err,rows) => {
     //            if(!err) {
     //                res.send(rows);
-                  
+
     //            } else {
     //                console.log(err);
     //            }
     //        });
     //    }
-       
-    });
 
-    app.post('/getsubjectwisebatch', async(req,res) => {
-        let data = req.body;
-        // let rows = await runQuery(`SELECT * FROM subject WHERE cid='${data.cid}' AND did='${data.did}' AND sem='${data.sem}' AND dv='${data.dv}' AND scode='${data.id}' AND  academic_year='${data.academic_year}' ORDER BY batch`)
-        // let option = `<option value ="">Select batch</option>`;
-        // for( let index = 0; index < rows.length; index++){
-        //                 option += `<option value = "${rows[index].batch} ">${rows[index].batch}</option>`;
-        //             }
-        //             res.send(option)
-    
-        var option = `<option>Select batch</option>`
-        //console.log(`SELECT * FROM subject WHERE cid='${data.cid}' AND did='${data.did}' AND sem='${data.sem}' AND dv='${data.dv}' AND scode='${data.id}' AND  academic_year='${data.academic_year}' and batch='${data.batch}' ORDER BY batch`)
-         mysqlConnection.query(`SELECT * FROM subject WHERE cid=? AND did=? AND sem=? AND dv=? AND scode=? AND  academic_year=?  ORDER BY batch`, [data.cid,data.dept,data.sem,data.dv,data.id,data.academic_year],(err,rows) => {
-            if(!err) {
-                for( let index = 0; index < rows.length; index++){
-                    option += `<option value = "${rows[index].batch} ">${rows[index].batch}</option>`;
-                }
-                res.send(option)
-            } else {
-                console.log(err);
-            }
-        });
-    });
-    
-    
-     app.post('/getstudentidbatch', (req,res) => {
-         let data = req.body;
-         let studentId = data.student_id;
-         let btch =  data.batch;
-         let added = 0;
-         let add = ``;
-    
-        mysqlConnection.query(`SELECT * FROM sub_info WHERE  cid=? AND scd=? AND academic_year=? AND dv=? and sem=? and did=?  and student_id=? `,[data.cid,data.scd,data.academic_year,data.dv,data.sem,data.did,studentId], async (err,rows) => {
-             if(!err) {
-                 let studnetDetails = rows[0];
-                 if(studnetDetails != null){  
-                     if(studnetDetails.batch != btch){
-                          //console.log(`UPDATE sub_info SET batch='${btch}' WHERE college='${studnetDetails.college}' AND student_id='${studnetDetails.student_id}' AND scd='${studnetDetails.scd}' AND sem='${studnetDetails.sem}' AND dept='${studnetDetails.dept}' AND academic_year='${studnetDetails.academic_year}' AND dv='${studnetDetails.dv}'`)
-                        let row1 = await promisePool.query(`UPDATE sub_info SET batch='${btch}' WHERE college='${studnetDetails.college}' AND student_id='${studnetDetails.student_id}' AND scd='${studnetDetails.scd}' AND sem='${studnetDetails.sem}' AND dept='${studnetDetails.dept}' AND academic_year='${studnetDetails.academic_year}' AND dv='${studnetDetails.dv}'`) 
-                        added++;
-                        add = '1'
-                     }  
-                } 
-                 res.send(add);
-             } else {
-                 console.log(err);
-             }
-         });
-        
-     });
+});
 
-     app.post('/getDbAcademicYear',(req,res) => {
-        let data = req.body;
-        mysqlConnection.query(`SELECT MAX(academic_year) AS academicYear FROM academic_year WHERE cid=?`,[data.cid], (err,rows) => {
-            if(!err) {
-                res.send(rows);
-            } else {
-                console.log(err);
-            }
-        });
-    })
-   
-   
-    /*app.post('/getstudentsid', (req,res) => {
-        let data = req.body;
-        mysqlConnection.query(`select student_id  from sub_info where academic_year=? and cid=? and did=? and sem=? GROUP BY student_id`, [data.academic_year,data.cid,data.dept,data.sem], (err,rows) => {
-           if(!err) {
-               res.send(rows);
-           } else {
-               console.log(err);
-           }
-        });
-    });*/
-   
-    app.post('/getinternal', (req, res) => {
-       let data = req.body;
-       //console.log(`SELECT internal from nba_question where cid='${data.cid}' GROUP BY internal`)
-       mysqlConnection.query('SELECT internal from nba_question where cid=? GROUP BY internal', [data.cid], (err, rows) => {
-           if (!err) {
-               let option = `<option value= "" >Select Internals</option>`;
-               for (let index = 0; index < rows.length; index++) {
-                   option += `<option value="${rows[index].internal}">${rows[index].internal}</option>`
-               }
-               res.send(option);
-           } else {
-               console.log(err);
-           }
-       });
-       //connection.end();
-   });
-
-   app.post('/getstudentlist3', (req,res) => {
+app.post('/getsubjectwisebatch', async (req, res) => {
     let data = req.body;
-      
-    mysqlConnection.query(`SELECT  s.student_id,si.usn,si.name from sub_info s INNER JOIN student_info si ON s.student_id= si.student_id where s.did=? and s.sem=? and s.academic_year=? group by s.student_id `, [data.did,data.sem,data.academic_year], async (err,rows) => {
-        if(!err){
-            let tbody ='';
+    // let rows = await runQuery(`SELECT * FROM subject WHERE cid='${data.cid}' AND did='${data.did}' AND sem='${data.sem}' AND dv='${data.dv}' AND scode='${data.id}' AND  academic_year='${data.academic_year}' ORDER BY batch`)
+    // let option = `<option value ="">Select batch</option>`;
+    // for( let index = 0; index < rows.length; index++){
+    //                 option += `<option value = "${rows[index].batch} ">${rows[index].batch}</option>`;
+    //             }
+    //             res.send(option)
+
+    var option = `<option>Select batch</option>`
+    //console.log(`SELECT * FROM subject WHERE cid='${data.cid}' AND did='${data.did}' AND sem='${data.sem}' AND dv='${data.dv}' AND scode='${data.id}' AND  academic_year='${data.academic_year}' and batch='${data.batch}' ORDER BY batch`)
+    mysqlConnection.query(`SELECT * FROM subject WHERE cid=? AND did=? AND sem=? AND dv=? AND scode=? AND  academic_year=?  ORDER BY batch`, [data.cid, data.dept, data.sem, data.dv, data.id, data.academic_year], (err, rows) => {
+        if (!err) {
+            for (let index = 0; index < rows.length; index++) {
+                option += `<option value = "${rows[index].batch} ">${rows[index].batch}</option>`;
+            }
+            res.send(option)
+        } else {
+            console.log(err);
+        }
+    });
+});
+
+
+app.post('/getstudentidbatch', (req, res) => {
+    let data = req.body;
+    let studentId = data.student_id;
+    let btch = data.batch;
+    let added = 0;
+    let add = ``;
+
+    mysqlConnection.query(`SELECT * FROM sub_info WHERE  cid=? AND scd=? AND academic_year=? AND dv=? and sem=? and did=?  and student_id=? `, [data.cid, data.scd, data.academic_year, data.dv, data.sem, data.did, studentId], async (err, rows) => {
+        if (!err) {
+            let studnetDetails = rows[0];
+            if (studnetDetails != null) {
+                if (studnetDetails.batch != btch) {
+                    //console.log(`UPDATE sub_info SET batch='${btch}' WHERE college='${studnetDetails.college}' AND student_id='${studnetDetails.student_id}' AND scd='${studnetDetails.scd}' AND sem='${studnetDetails.sem}' AND dept='${studnetDetails.dept}' AND academic_year='${studnetDetails.academic_year}' AND dv='${studnetDetails.dv}'`)
+                    let row1 = await promisePool.query(`UPDATE sub_info SET batch='${btch}' WHERE college='${studnetDetails.college}' AND student_id='${studnetDetails.student_id}' AND scd='${studnetDetails.scd}' AND sem='${studnetDetails.sem}' AND dept='${studnetDetails.dept}' AND academic_year='${studnetDetails.academic_year}' AND dv='${studnetDetails.dv}'`)
+                    added++;
+                    add = '1'
+                }
+            }
+            res.send(add);
+        } else {
+            console.log(err);
+        }
+    });
+
+});
+
+app.post('/getDbAcademicYear', (req, res) => {
+    let data = req.body;
+    mysqlConnection.query(`SELECT MAX(academic_year) AS academicYear FROM academic_year WHERE cid=?`, [data.cid], (err, rows) => {
+        if (!err) {
+            res.send(rows);
+        } else {
+            console.log(err);
+        }
+    });
+})
+
+
+/*app.post('/getstudentsid', (req,res) => {
+    let data = req.body;
+    mysqlConnection.query(`select student_id  from sub_info where academic_year=? and cid=? and did=? and sem=? GROUP BY student_id`, [data.academic_year,data.cid,data.dept,data.sem], (err,rows) => {
+       if(!err) {
+           res.send(rows);
+       } else {
+           console.log(err);
+       }
+    });
+});*/
+
+app.post('/getinternal', (req, res) => {
+    let data = req.body;
+    //console.log(`SELECT internal from nba_question where cid='${data.cid}' GROUP BY internal`)
+    mysqlConnection.query('SELECT internal from nba_question where cid=? GROUP BY internal', [data.cid], (err, rows) => {
+        if (!err) {
+            let option = `<option value= "" >Select Internals</option>`;
+            for (let index = 0; index < rows.length; index++) {
+                option += `<option value="${rows[index].internal}">${rows[index].internal}</option>`
+            }
+            res.send(option);
+        } else {
+            console.log(err);
+        }
+    });
+    //connection.end();
+});
+
+app.post('/getstudentlist3', (req, res) => {
+    let data = req.body;
+
+    mysqlConnection.query(`SELECT  s.student_id,si.usn,si.name from sub_info s INNER JOIN student_info si ON s.student_id= si.student_id where s.did=? and s.sem=? and s.academic_year=? group by s.student_id `, [data.did, data.sem, data.academic_year], async (err, rows) => {
+        if (!err) {
+            let tbody = '';
             let thead = '';
             let subjectDetails = rows;
-            
+
             for (let j = 0; j < subjectDetails.length; j++) {
                 const studentlist = subjectDetails[j];
                 tbody += `<tr>
@@ -4470,18 +4470,18 @@ app.post('/getDbAcademicYear2',(req,res) => {
                 <tr>`
             }
             let getsubjects = await promisePool.query(`SELECT  * from subject_pre where did='${data.did}' and sem='${data.sem}'  and academic_year='${data.academic_year}' and stype='theory'`)
-          
+
             for (let i = 0; i < getsubjects[0].length; i++) {
                 const subjects = getsubjects[0][i];
                 thead += ` <th>${subjects.sname}<br/>(${subjects.scode})</th>`;
-                
+
                 let fids = await promisePool.query(`SELECT * from subject where sem='${subjects.sem}' and did='${subjects.did}' and dv='${subjects.dv}' and academic_year='${subjects.academic_year}' and scode='${subjects.scode}'`)
                 for (let j = 0; j < fids[0].length; j++) {
                     const element = fids[0][j];
-                   let qusetion = await promisePool.query(`SELECT * FROM nba_question WHERE fid='${element.fid}' AND scode='${element.scode}' AND internal='${data.ia}' AND dv='${element.dv}' AND did='${element.did}' ORDER BY id ASC`) 
-                }      
+                    let qusetion = await promisePool.query(`SELECT * FROM nba_question WHERE fid='${element.fid}' AND scode='${element.scode}' AND internal='${data.ia}' AND dv='${element.dv}' AND did='${element.did}' ORDER BY id ASC`)
+                }
             }
-                 
+
             let table = `<table class="table table-bordered text-center">
             <thead class="thead-dark">
             <tr class="text-Uppercase">
@@ -4497,61 +4497,61 @@ app.post('/getDbAcademicYear2',(req,res) => {
             </tbody>
         </table>`;
 
-         res.send(table); 
-         
+            res.send(table);
+
         } else {
             console.log(err);
         }
-    
+
     });
 });
 
-app.post('/subjectgenerate', async (req,res) => {
+app.post('/subjectgenerate', async (req, res) => {
     let data = req.body;
     let cid = data.cid;
     let dv = data.dv;
     let cid1 = '';
-    let added =``;
+    let added = ``;
 
-    if(cid == 4 || cid == 8 || cid == 9){
-         cid1 = 0;
+    if (cid == 4 || cid == 8 || cid == 9) {
+        cid1 = 0;
     } else {
         cid1 = cid
     }
-    let cy =``;
-    
+    let cy = ``;
+
     //cy = substr(dv, 0, 1);
     cy = dv.substring(0, 4);
-   // console.log(cy)
-   let sql = ``;
-   if(cid == 1 || cid == 3 || cid == 6 || cid == 5){
-       if(cid == 1){
-           if(data.sem > 2){
+    // console.log(cy)
+    let sql = ``;
+    if (cid == 1 || cid == 3 || cid == 6 || cid == 5) {
+        if (cid == 1) {
+            if (data.sem > 2) {
                 sql = `SELECT a.id,a.scode,a.sname,a.dept,a.did,a.college,a.cid,a.academic_year,a.scheme,a.stype,a.sem,a.punit,a.typ,a.academic_type,(select count(id) from student_academic where  sem=a.sem and did=a.did AND academic_year=a.academic_year and dv='${dv}') as sstr,
                if(stype='lab',(select lab_batch from sal_workload where cid='${cid}' and sstr BETWEEN smini and smax ),'1') as lab_batch
                FROM subject_pre a where academic_year='${data.academic_year}'and did='${data.did}' and cid='${cid}' and sem='${data.sem}' order by sem,if(substr(scode,5,1)>0,substr(scode,6,1),substr(scode,7,1) ) Asc`;
-           } else {
-               sql = `SELECT a.id,a.scode,a.sname,a.dept,a.did,a.college,a.cid,a.academic_year,a.scheme,a.stype,a.sem,a.punit,a.typ,a.academic_type,(select count(id) from student_academic where  sem=a.sem and did=a.did AND academic_year=a.academic_year and dv='${dv}') as sstr,
+            } else {
+                sql = `SELECT a.id,a.scode,a.sname,a.dept,a.did,a.college,a.cid,a.academic_year,a.scheme,a.stype,a.sem,a.punit,a.typ,a.academic_type,(select count(id) from student_academic where  sem=a.sem and did=a.did AND academic_year=a.academic_year and dv='${dv}') as sstr,
                if(stype='lab',(select lab_batch from sal_workload where cid='${cid}' and sstr BETWEEN smini and smax),'1') as lab_batch
                FROM subject_pre a where academic_year='${data.academic_year}'and did='${data.did}' and dv='${cy}'  and sem='${data.sem}' order by sem,if(substr(scode,5,1)>0,substr(scode,6,1),substr(scode,7,1) ) Asc`;
-           } 
-       } else {
-           sql = `SELECT a.id,a.scode,a.sname,a.dept,a.did,a.college,a.cid,a.academic_year,a.scheme,a.stype,a.sem,a.punit,a.typ,a.academic_type,(select count(id) from student_academic where  sem=a.sem and did=a.did AND academic_year=a.academic_year and dv='${dv}' and student_id in 
+            }
+        } else {
+            sql = `SELECT a.id,a.scode,a.sname,a.dept,a.did,a.college,a.cid,a.academic_year,a.scheme,a.stype,a.sem,a.punit,a.typ,a.academic_type,(select count(id) from student_academic where  sem=a.sem and did=a.did AND academic_year=a.academic_year and dv='${dv}' and student_id in 
            (SELECT student_id from student_info WHERE did=a.did and academic_type= a.academic_type )) as sstr,
            if(stype='lab',(select lab_batch from sal_workload where cid='${cid}' and sstr BETWEEN smini and smax ),'1') as lab_batch
            FROM subject_pre a where academic_year='${data.academic_year}'and did='${data.did}' and cid='${cid}' and sem='${data.sem}' order by sem,if(substr(scode,5,1)>0,substr(scode,6,1),substr(scode,7,1) ) Asc`;
-       }
-   } else {
-    sql = `SELECT a.id,a.scode,a.sname,a.dept,a.did,a.college,a.cid,a.academic_year,a.scheme,a.stype,a.sem,a.punit,a.typ,a.academic_type,(select count(id) from student_academic where  sem=a.sem and did=a.did AND academic_year=a.academic_year and dv='${dv}') as sstr,
+        }
+    } else {
+        sql = `SELECT a.id,a.scode,a.sname,a.dept,a.did,a.college,a.cid,a.academic_year,a.scheme,a.stype,a.sem,a.punit,a.typ,a.academic_type,(select count(id) from student_academic where  sem=a.sem and did=a.did AND academic_year=a.academic_year and dv='${dv}') as sstr,
     if(stype='lab',(select lab_batch from sal_workload where cid='${cid}' and sstr BETWEEN smini and smax ),'1') as lab_batch
     FROM subject_pre a where academic_year='${data.academic_year}'and did='${data.did}' and cid='${cid}' and sem='${data.sem}' order by sem,if(substr(scode,5,1)>0,substr(scode,6,1),substr(scode,7,1) ) Asc`;
-   }
+    }
 
-   let q1 = await promisePool.query(sql);
-   let icnt = 1;
-   let ncnt = 1;
-   for (let i = 0; i < q1[0].length; i++) {
-       const r = q1[0][i];
+    let q1 = await promisePool.query(sql);
+    let icnt = 1;
+    let ncnt = 1;
+    for (let i = 0; i < q1[0].length; i++) {
+        const r = q1[0][i];
 
 
         let sub_id = r['id'];
@@ -4566,78 +4566,78 @@ app.post('/subjectgenerate', async (req,res) => {
         let academic_type = r['academic_type']
         let cid = r['cid'];
         let typ = r['typ'];
-        let punit =r['punit'];
+        let punit = r['punit'];
         let sche = r['scheme']
         let college = r['college']
         let cnt = 1;
-    
-       
-       while (lab_batch >= cnt) {
-           let batch = ``;
-           if(stype == 'Lab'){
-                batch = 'b' . cnt;
-           } else {
-               batch = '';
-           }
-          
+
+
+        while (lab_batch >= cnt) {
+            let batch = ``;
+            if (stype == 'Lab') {
+                batch = 'b'.cnt;
+            } else {
+                batch = '';
+            }
+
             let q2 = await promisePool.query(`select * from subject where scode='${scode}' and sem='${sem}' and dv='${dv}' and batch='${batch}' and did='${did}' and academic_year='${ayear}' and cid='${cid}' and typ='${typ}'`)
             //console.log(q2[0] > '')
-           if(q2[0] > ''){
-               console.log('failed')
-               added = '1';
-            ncnt++;
-           } else {
-            console.log('successfull')
-               let q3 = await promisePool.query(`INSERT INTO subject (sub_id, scode, sname, dept, did, sem, dv ,batch, academic_year, punit, scheme, pre_date, college, cid, stype, typ, academic_type)  VALUES ('${sub_id}','${scode}','${sname}','${dept}','${did}','${sem}','${dv}','${batch}','${ayear}','${punit}','${sche}',now(),'${college}','${cid}','${stype}','${typ}','${academic_type}')`)
-               icnt++;
-               added ='2';
-           }
-           cnt++; 
-       } 
-   }
-   let msg ='';
-       if (icnt == 1 && ncnt != 1) {
-           msg = 'No New Record Added';
-         } else {
-            msg = 'New Record Added';
-           }
-            res.send(added)
+            if (q2[0] > '') {
+                console.log('failed')
+                added = '1';
+                ncnt++;
+            } else {
+                console.log('successfull')
+                let q3 = await promisePool.query(`INSERT INTO subject (sub_id, scode, sname, dept, did, sem, dv ,batch, academic_year, punit, scheme, pre_date, college, cid, stype, typ, academic_type)  VALUES ('${sub_id}','${scode}','${sname}','${dept}','${did}','${sem}','${dv}','${batch}','${ayear}','${punit}','${sche}',now(),'${college}','${cid}','${stype}','${typ}','${academic_type}')`)
+                icnt++;
+                added = '2';
+            }
+            cnt++;
+        }
+    }
+    let msg = '';
+    if (icnt == 1 && ncnt != 1) {
+        msg = 'No New Record Added';
+    } else {
+        msg = 'New Record Added';
+    }
+    res.send(added)
 });
 
 
-app.post('/getSemNew', (req,res) => {
+app.post('/getSemNew', (req, res) => {
     let deptid = req.body.did;
     let cllgid = req.body.cid;
     let option = `<option value=""> Select Sem</option>`;
-    
-    if(cllgid == 1){
-        if(deptid == 6){
+
+    if (cllgid == 1) {
+        if (deptid == 6) {
             //for basic science
             for (let i = 1; i <= 2; i++) {
-                option += `<option value="${i}">${i}</option>`;  
+                option += `<option value="${i}">${i}</option>`;
             }
-        } else if(deptid ==7 || deptid == 19 || deptid == 20 || deptid == 21 || deptid == 82 || deptid == 83 || deptid == 84 || deptid == 85 ){
+        } else if (deptid == 7 || deptid == 19 || deptid == 20 || deptid == 21 || deptid == 82 || deptid == 83 || deptid == 84 || deptid == 85) {
             //for PG Departments
             for (let i = 1; i <= 4; i++) {
-                option += `<option value="${i}">${i}</option>`;  
+                option += `<option value="${i}">${i}</option>`;
             }
-        } else  {
+        } else {
             //for UG and Other Departments
             for (let i = 3; i <= 8; i++) {
-                option += `<option value="${i}">${i}</option>`;  
+                option += `<option value="${i}">${i}</option>`;
             }
         }
-    } else if(cllgid == 6){
+    } else if (cllgid == 6) {
         for (let i = 1; i <= 10; i++) {
-            option += `<option value="${i}">${i}</option>`;  
+            option += `<option value="${i}">${i}</option>`;
         }
-    } else if(cllgid == 3 || cllgid == 4 || cllgid == 5){
+    } else if (cllgid == 3 || cllgid == 4 || cllgid == 5) {
         for (let i = 1; i <= 6; i++) {
-            option += `<option value="${i}">${i}</option>`;  
+            option += `<option value="${i}">${i}</option>`;
         }
-    } else if(cllgid == 8 || cllgid == 9 || cllgid == 34){
+    } else if (cllgid == 8 || cllgid == 9 || cllgid == 34) {
         for (let i = 1; i <= 2; i++) {
-            option += `<option value="${i}">${i}</option>`;  
+            option += `<option value="${i}">${i}</option>`;
         }
     }
     res.send(option)
@@ -4673,21 +4673,21 @@ app.post('/eventdetail', async (req, res) => {
 
 app.post('/update', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('UPDATE calendar_events SET title=?, descp=?, start=?, end=?, etype=? WHERE id=?' ,  [data.title, data.desc, data.start, data.end, data.etype, data.id], (err, rows, fields) => {
+    mysqlConnection.query('UPDATE calendar_events SET title=?, descp=?, start=?, end=?, etype=? WHERE id=?', [data.title, data.desc, data.start, data.end, data.etype, data.id], (err, rows, fields) => {
         if (!err)
-            res.send("1");  
-        else 
+            res.send("1");
+        else
             console.log(err);
     })
 });
 
-app.post('/addlsnpln',async (req, res) => {
+app.post('/addlsnpln', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`INSERT into tlsnpln (fid,fname,scode,sname,sem,dv,dept,did,planned_date,tdate,mdno,topicd,sub_topic,teaching_methods,teaching_aids,assignment_tool,status,class_id,hod,vp,date,academic_year) values ('${data.fid}','${data.fname}','${data.scode}','${data.sname}','${data.sem}','${data.dv}','${data.dept}','${data.did}','${data.planned_date}','${data.tdate}','${data.mdno}','${data.topicd}','${data.sub_topic}','${data.teaching_methods}','${data.teaching_aids}','${data.assignment_tool}','${data.status}','${data.class_id}','${data.hod}','${data.vp}','${data.date}','${data.academic_year}')`);
     if (rows.affectedRows > 0) {
         res.send('1');
     } else
-            console.log(err);
+        console.log(err);
     // mysqlConnection.query('INSERT into tlsnpln (fid,fname,scode,sname,sem,dv,dept,did,planned_date,tdate,mdno,topicd,sub_topic,teaching_methods,teaching_aids,assignment_tool,status,class_id,hod,vp,date,academic_year) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  [data.fid, data.fname, data.scode, data.sname, data.sem, data.dv, data.dept, data.did, data.planned_date, data.tdate, data.mdno, data.topicd, data.sub_topic, data.teaching_methods, data.teaching_aids, data.assignment_tool, data.status, data.class_id, data.hod, data.vp, data.date, data.academic_year ], (err, rows) => {
     //     if (!err)
     //         res.send('1');
@@ -4702,13 +4702,13 @@ app.post('/addlablsnpln', async (req, res) => {
     if (rows.affectedRows > 0) {
         res.send('1');
     } else
-            console.log(err);
-//    mysqlConnection.query('INSERT into tlsnpln_lab (fid,fname,scode,sname,sem,dv,batch,dept,did,planned_date,academic_year,experiment,exp_no,status,class_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  [data.fid, data.fname, data.scode, data.sname, data.sem, data.dv, data.batch, data.dept, data.did, data.planned_date, data.academic_year, data.exp, data.expno, data.status, data.class_id ], (err, rows) => {
-//         if (!err)
-//             res.send('1');
-//         else
-//             console.log(err);
-//     })
+        console.log(err);
+    //    mysqlConnection.query('INSERT into tlsnpln_lab (fid,fname,scode,sname,sem,dv,batch,dept,did,planned_date,academic_year,experiment,exp_no,status,class_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  [data.fid, data.fname, data.scode, data.sname, data.sem, data.dv, data.batch, data.dept, data.did, data.planned_date, data.academic_year, data.exp, data.expno, data.status, data.class_id ], (err, rows) => {
+    //         if (!err)
+    //             res.send('1');
+    //         else
+    //             console.log(err);
+    //     })
 });
 
 app.post('/getcurrentacademicyear', async (req, res) => {
@@ -4727,59 +4727,59 @@ app.post('/getcurrentacademicyear', async (req, res) => {
 app.post('/getmoduleoption', async (req, res) => {
     let data = req.body;
     var option = `<option value="">Select Module No</option>`;
-  
-  if(data.subject!=''){
-    let rows = await runQuery(`SELECT scode,dv FROM subject s WHERE id='${data.subject}' `);
- 
-    if (rows.length > 0) {
-        let subjectDetails = rows[0];
-       // console.log(`SELECT mdno from tlsnpln where fid='${data.fid}' AND scode='${subjectDetails.scode}' AND dv='${subjectDetails.dv}' AND academic_year='${data.academicYear}' GROUP BY mdno`);
-        let rows1 = await runQuery(`SELECT mdno from tlsnpln where fid='${data.fid}' AND scode='${subjectDetails.scode}' AND dv='${subjectDetails.dv}' AND academic_year='${data.academicYear}' GROUP BY mdno `);
-  //console.log(rows1.length);
-        if (rows1.length > 0) {
-            for (let index = 0; index < rows1.length; index++) {
-                option += `<option value="${rows1[index].mdno}">${rows1[index].mdno}</option>`;
-                
+
+    if (data.subject != '') {
+        let rows = await runQuery(`SELECT scode,dv FROM subject s WHERE id='${data.subject}' `);
+
+        if (rows.length > 0) {
+            let subjectDetails = rows[0];
+            // console.log(`SELECT mdno from tlsnpln where fid='${data.fid}' AND scode='${subjectDetails.scode}' AND dv='${subjectDetails.dv}' AND academic_year='${data.academicYear}' GROUP BY mdno`);
+            let rows1 = await runQuery(`SELECT mdno from tlsnpln where fid='${data.fid}' AND scode='${subjectDetails.scode}' AND dv='${subjectDetails.dv}' AND academic_year='${data.academicYear}' GROUP BY mdno `);
+            //console.log(rows1.length);
+            if (rows1.length > 0) {
+                for (let index = 0; index < rows1.length; index++) {
+                    option += `<option value="${rows1[index].mdno}">${rows1[index].mdno}</option>`;
+
+                }
+                option += '<option value="all">All</option>';
+                res.send(option);
+            } else {
+                console.log(err);
             }
-            option +='<option value="all">All</option>';
-            res.send(option);
-        } else {
+        }
+        else {
             console.log(err);
         }
-}
-else {
-    console.log(err);
-}
-}
-//     var option = `<option value="">Select Module No</option>`;
-//  //   let query = await promisePool.query("Select scode,dv from subject where id='${data.subject}'")
-//  //   let scode = query['scode'];
-//   //  let dv = query['dv'];   
-//   if(data.subject!=''){
-//   mysqlConnection.query('SELECT scode,dv FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
-//     if (!err) {
-//         let subjectDetails = row[0];
+    }
+    //     var option = `<option value="">Select Module No</option>`;
+    //  //   let query = await promisePool.query("Select scode,dv from subject where id='${data.subject}'")
+    //  //   let scode = query['scode'];
+    //   //  let dv = query['dv'];   
+    //   if(data.subject!=''){
+    //   mysqlConnection.query('SELECT scode,dv FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
+    //     if (!err) {
+    //         let subjectDetails = row[0];
 
-//     mysqlConnection.query('SELECT mdno from tlsnpln where fid=? AND scode=? AND dv=? AND academic_year=? GROUP BY mdno', [data.fid, subjectDetails.scode, subjectDetails.dv, data.academicYear], (err, rows, fields) => {
-//         if (!err) {
-//             for (let index = 0; index < rows.length; index++) {
-//                 option += `<option value="${rows[index].mdno}">${rows[index].mdno}</option>`;
-                
-//             }
-//             option +='<option value="all">All</option>';
-//             res.send(option);
-//         } else {
-//             console.log(err);
-//         }
-       
-//     })
-// }
-// else {
-//     console.log(err);
-// }
-   
-// })
-// }
+    //     mysqlConnection.query('SELECT mdno from tlsnpln where fid=? AND scode=? AND dv=? AND academic_year=? GROUP BY mdno', [data.fid, subjectDetails.scode, subjectDetails.dv, data.academicYear], (err, rows, fields) => {
+    //         if (!err) {
+    //             for (let index = 0; index < rows.length; index++) {
+    //                 option += `<option value="${rows[index].mdno}">${rows[index].mdno}</option>`;
+
+    //             }
+    //             option +='<option value="all">All</option>';
+    //             res.send(option);
+    //         } else {
+    //             console.log(err);
+    //         }
+
+    //     })
+    // }
+    // else {
+    //     console.log(err);
+    // }
+
+    // })
+    // }
 
 });
 
@@ -4787,141 +4787,141 @@ app.post('/getlsnplndetails', async (req, res) => {
     let data = req.body;
     let mdno = data.mdno;
 
-    if(data.subject!=''){
-     
+    if (data.subject != '') {
+
         let rows = await runQuery(`SELECT scode,dv,did FROM subject s WHERE id='${data.subject}' `);
-            if (rows.length> 0) {
-        let subjectDetails = rows[0];
-        if(mdno == 'all'){
-      
-        let rows1 = await runQuery(`SELECT planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' Order By mdno `);
-            if (rows1.length> 0) {
-                res.send(rows1);
+        if (rows.length > 0) {
+            let subjectDetails = rows[0];
+            if (mdno == 'all') {
+
+                let rows1 = await runQuery(`SELECT planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' Order By mdno `);
+                if (rows1.length > 0) {
+                    res.send(rows1);
+                } else {
+                    console.log(err);
+                }
+
             } else {
-                console.log(err);
+
+                let rows2 = await runQuery(`SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and mdno='${mdno}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' `);
+                if (rows2.length > 0) {
+                    res.send(rows2);
+                } else {
+                    console.log(err);
+                }
+
             }
-       
-    } else{
-      
-        let rows2 = await runQuery(`SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and mdno='${mdno}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' `);
-            if (rows2.length > 0) {
-                res.send(rows2);
-            } else {
-                console.log(err);
-            }
-        
-    }
-    }
-    else {
-        console.log(err);
-    }
-  
+        }
+        else {
+            console.log(err);
+        }
+
     }
 
-//     if(data.subject!=''){
-//     mysqlConnection.query('SELECT scode,dv,did FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
-//         if (!err) {
-//     let subjectDetails = row[0];
-//     if(mdno == 'all'){
-//     mysqlConnection.query('SELECT planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln where fid=? and did=? and scode=? and dv=? and academic_year=? Order By mdno', ['completed', data.fid, subjectDetails.did, subjectDetails.scode, subjectDetails.dv, data.academic_year], (err, rows, fields) => {
-//         if (!err) {
-//             res.send(rows);
-//         } else {
-//             console.log(err);
-//         }
-//     })
-// } else{
-//     mysqlConnection.query('SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln where fid=? and did=? and mdno=? and scode=? and dv=? and academic_year=?', ['completed', data.fid, subjectDetails.did, mdno, subjectDetails.scode, subjectDetails.dv, data.academic_year], (err, rows, fields) => {
-//         if (!err) {
-//             res.send(rows);
-//         } else {
-//             console.log(err);
-//         }
-//     })
-// }
-// }
-// else {
-//     console.log(err);
-// }
-// })
-// }
+    //     if(data.subject!=''){
+    //     mysqlConnection.query('SELECT scode,dv,did FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
+    //         if (!err) {
+    //     let subjectDetails = row[0];
+    //     if(mdno == 'all'){
+    //     mysqlConnection.query('SELECT planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln where fid=? and did=? and scode=? and dv=? and academic_year=? Order By mdno', ['completed', data.fid, subjectDetails.did, subjectDetails.scode, subjectDetails.dv, data.academic_year], (err, rows, fields) => {
+    //         if (!err) {
+    //             res.send(rows);
+    //         } else {
+    //             console.log(err);
+    //         }
+    //     })
+    // } else{
+    //     mysqlConnection.query('SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln where fid=? and did=? and mdno=? and scode=? and dv=? and academic_year=?', ['completed', data.fid, subjectDetails.did, mdno, subjectDetails.scode, subjectDetails.dv, data.academic_year], (err, rows, fields) => {
+    //         if (!err) {
+    //             res.send(rows);
+    //         } else {
+    //             console.log(err);
+    //         }
+    //     })
+    // }
+    // }
+    // else {
+    //     console.log(err);
+    // }
+    // })
+    // }
 });
 
 app.post('/getlablsnplndetails', async (req, res) => {
     let data = req.body;
 
-    if(data.subject!=''){
-       
+    if (data.subject != '') {
+
         let rows = await runQuery(`SELECT scode,dv,did,batch FROM subject s WHERE id='${data.subject}' `);
-            if (rows.length > 0) {
-        let subjectDetails = rows[0];
-       
-      
-        let rows1 = await runQuery(`SELECT id,planned_date,experiment,exp_no, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln_lab as t where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and batch='${subjectDetails.batch}' and academic_year='${data.academic_year}' Order By exp_no `);
+        if (rows.length > 0) {
+            let subjectDetails = rows[0];
+
+
+            let rows1 = await runQuery(`SELECT id,planned_date,experiment,exp_no, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln_lab as t where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and batch='${subjectDetails.batch}' and academic_year='${data.academic_year}' Order By exp_no `);
             if (rows1.length > 0) {
                 res.send(rows1);
             } else {
                 console.log(err);
             }
-       
-    
-    }
-    else {
-        console.log(err);
-    }
-    
+
+
+        }
+        else {
+            console.log(err);
+        }
+
     }
 
-//     if(data.subject!=''){
-//     mysqlConnection.query('SELECT scode,dv,did,batch FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
-//         if (!err) {
-//     let subjectDetails = row[0];
-   
-//     mysqlConnection.query('SELECT id,planned_date,experiment,exp_no, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln_lab as t where fid=? and did=? and scode=? and dv=? and batch=? and academic_year=? Order By exp_no', ['completed', data.fid, subjectDetails.did, subjectDetails.scode, subjectDetails.dv, subjectDetails.batch, data.academic_year], (err, rows, fields) => {
-//         if (!err) {
-//             res.send(rows);
-//         } else {
-//             console.log(err);
-//         }
-//     })
+    //     if(data.subject!=''){
+    //     mysqlConnection.query('SELECT scode,dv,did,batch FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
+    //         if (!err) {
+    //     let subjectDetails = row[0];
 
-// }
-// else {
-//     console.log(err);
-// }
-// })
-// }
+    //     mysqlConnection.query('SELECT id,planned_date,experiment,exp_no, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln_lab as t where fid=? and did=? and scode=? and dv=? and batch=? and academic_year=? Order By exp_no', ['completed', data.fid, subjectDetails.did, subjectDetails.scode, subjectDetails.dv, subjectDetails.batch, data.academic_year], (err, rows, fields) => {
+    //         if (!err) {
+    //             res.send(rows);
+    //         } else {
+    //             console.log(err);
+    //         }
+    //     })
+
+    // }
+    // else {
+    //     console.log(err);
+    // }
+    // })
+    // }
 });
 
 app.post('/deletelablsnpln', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`DELETE from tlsnpln_lab where id='${data.id}' `);
-   
-        if (rows.affectedRows > 0) {
-            res.send('1');
-        } else {
-            console.log(err);
-        }
 
-         // mysqlConnection.query('DELETE from tlsnpln_lab where id=?', [data.id], (err, rows, fields) => {
-        //     if (!err) {
-        //         res.send('1');
-        //     } else {
-        //         console.log(err);
-        //     }
-        // });
-    
+    if (rows.affectedRows > 0) {
+        res.send('1');
+    } else {
+        console.log(err);
+    }
+
+    // mysqlConnection.query('DELETE from tlsnpln_lab where id=?', [data.id], (err, rows, fields) => {
+    //     if (!err) {
+    //         res.send('1');
+    //     } else {
+    //         console.log(err);
+    //     }
+    // });
+
 });
 
 app.post('/deletelsnpln', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`DELETE from tlsnpln where id='${data.id}' `);
-   
-        if (rows.affectedRows > 0) {
-            res.send('1');
-        } else {
-            console.log(err);
-        }
+
+    if (rows.affectedRows > 0) {
+        res.send('1');
+    } else {
+        console.log(err);
+    }
 
     // mysqlConnection.query('DELETE from tlsnpln where id=?', [data.id], (err, rows, fields) => {
     //     if (!err) {
@@ -4932,15 +4932,15 @@ app.post('/deletelsnpln', async (req, res) => {
     // })
 });
 
-app.post('/deleteevent',  async (req, res) => {
+app.post('/deleteevent', async (req, res) => {
     let data = req.body;
 
     let rows = await runQuery(`DELETE from calendar_events where id='${data.id}' `);
     if (rows.affectedRows > 0) {
-                res.send('1');
-            } else {
-                console.log(err);
-            }
+        res.send('1');
+    } else {
+        console.log(err);
+    }
 
     // mysqlConnection.query('DELETE from calendar_events where id=?', [data.id], (err, rows, fields) => {
     //     if (!err) {
@@ -4954,7 +4954,7 @@ app.post('/deleteevent',  async (req, res) => {
 app.post('/lsnplndetail', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids FROM tlsnpln WHERE id='${data.id}' `);
-    res.send(rows);  
+    res.send(rows);
     // mysqlConnection.query('SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids FROM tlsnpln WHERE id=?' ,  [data.id], (err, rows, fields) => {
     //     if (!err)
     //         res.send(rows);  
@@ -4966,71 +4966,71 @@ app.post('/lsnplndetail', async (req, res) => {
 app.post('/lablsnplndetail', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`SELECT id,planned_date,experiment FROM tlsnpln_lab WHERE id='${data.id}' `);
-    res.send(rows); 
+    res.send(rows);
     // mysqlConnection.query('SELECT id,planned_date,experiment FROM tlsnpln_lab WHERE id=?' ,  [data.id], (err, rows, fields) => {
     //     if (!err)
     //         res.send(rows);  
     //     else 
     //         console.log(err);
     // }) 
-}); 
+});
 
 app.post('/getcovsyl', async (req, res) => {
     let data = req.body;
 
-    if(data.subject!=''){
-       
+    if (data.subject != '') {
+
         let rows = await runQuery(`SELECT scode,dv,did FROM subject s WHERE id='${data.subject}' `)
-            if (rows.length > 0) {
-        let subjectDetails = rows[0];
-      
-       
-        let rows1 = await runQuery(`SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' and status='completed' Order By mdno,planned_date `)
-            
+        if (rows.length > 0) {
+            let subjectDetails = rows[0];
+
+
+            let rows1 = await runQuery(`SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status='completed' )as delivered_date from tlsnpln as t where fid='${data.fid}' and did='${subjectDetails.did}' and scode='${subjectDetails.scode}' and dv='${subjectDetails.dv}' and academic_year='${data.academic_year}' and status='completed' Order By mdno,planned_date `)
+
             if (rows1.length > 0) {
                 res.send(rows1);
             } else {
                 console.log(err);
             }
-       
-    
-    }
-    else {
-        console.log(err);
-    }
-  
-}
-   
-//     if(data.subject!=''){
-//     mysqlConnection.query('SELECT scode,dv,did FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
-//         if (!err) {
-//     let subjectDetails = row[0];
-  
-//     mysqlConnection.query('SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln as t where fid=? and did=? and scode=? and dv=? and academic_year=? and status=? Order By mdno,planned_date', ['completed,',  data.fid, subjectDetails.did, subjectDetails.scode, subjectDetails.dv, data.academic_year, 'completed'], (err, rows, fields) => {
-        
-//         if (!err) {
-//             res.send(rows);
-//         } else {
-//             console.log(err);
-//         }
-//     })
 
-// }
-// else {
-//     console.log(err);
-// }
-// })
-// }
+
+        }
+        else {
+            console.log(err);
+        }
+
+    }
+
+    //     if(data.subject!=''){
+    //     mysqlConnection.query('SELECT scode,dv,did FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
+    //         if (!err) {
+    //     let subjectDetails = row[0];
+
+    //     mysqlConnection.query('SELECT id,planned_date,mdno,topicd,sub_topic,teaching_methods,teaching_aids, (select date from class  where lp_id=t.id and status=? )as delivered_date from tlsnpln as t where fid=? and did=? and scode=? and dv=? and academic_year=? and status=? Order By mdno,planned_date', ['completed,',  data.fid, subjectDetails.did, subjectDetails.scode, subjectDetails.dv, data.academic_year, 'completed'], (err, rows, fields) => {
+
+    //         if (!err) {
+    //             res.send(rows);
+    //         } else {
+    //             console.log(err);
+    //         }
+    //     })
+
+    // }
+    // else {
+    //     console.log(err);
+    // }
+    // })
+    // }
 });
 
 app.post('/updlsnpln', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`UPDATE tlsnpln SET planned_date='${data.planned_date}', mdno='${data.mdno}', topicd='${data.topicd}', sub_topic='${data.sub_topic}', teaching_methods='${data.tmethod}', teaching_aids='${data.taids}' WHERE id='${data.id}' `)
-    if(rows.affectedRows > 0){
-        res.send("1");  
+    if (rows.affectedRows > 0) {
+        res.send("1");
     }
     else
-    console.log(err);
+        console.log(err);
     // mysqlConnection.query('UPDATE tlsnpln SET planned_date=?, mdno=?, topicd=?, sub_topic=?, teaching_methods=?, teaching_aids=? WHERE id=?' ,  [data.planned_date, data.mdno, data.topicd, data.sub_topic, data.tmethod, data.taids, data.id], (err, rows, fields) => {
     //     if (!err)
     //         res.send("1");  
@@ -5042,11 +5042,11 @@ app.post('/updlsnpln', async (req, res) => {
 app.post('/updlablsnpln', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`UPDATE tlsnpln_lab SET planned_date='${data.planned_date}', experiment='${data.exp}' WHERE id='${data.id}' `)
-    if(rows.affectedRows > 0){
-        res.send("1");  
+    if (rows.affectedRows > 0) {
+        res.send("1");
     }
     else
-    console.log(err);
+        console.log(err);
 
     // mysqlConnection.query('UPDATE tlsnpln_lab SET planned_date=?, experiment=? WHERE id=?',  [data.planned_date, data.exp, data.id], (err, rows, fields) => {
     //     if (!err)
@@ -5059,96 +5059,96 @@ app.post('/updlablsnpln', async (req, res) => {
 app.post('/getcooption', async (req, res) => {
     let data = req.body;
     var option = `<option value="">Select Co</option>`;
- 
-    if(data.subject!=''){
-       
-            let rows = await runQuery(`SELECT scode,dv FROM subject s WHERE id='${data.subject}' `)
-          if (rows.length > 0) {
-              let subjectDetails = rows[0];
-      
-         
+
+    if (data.subject != '') {
+
+        let rows = await runQuery(`SELECT scode,dv FROM subject s WHERE id='${data.subject}' `)
+        if (rows.length > 0) {
+            let subjectDetails = rows[0];
+
+
 
             let rows1 = await runQuery(`SELECT id,cos FROM nba_co WHERE fid='${data.fid}' AND scode='${subjectDetails.scode}' AND academic_year='${data.academicYear}' AND hod='1' `)
-              if (rows1.length > 0) {
-                  for (let index = 0; index < rows1.length; index++) {
-                      option += `<option value="${rows1[index].id}">${rows1[index].cos}</option>`;
-                      
-                  }
-                 
-                  res.send(option);
-              } else {
-                  console.log(err);
-              }
-             
-          
-      }
-      else {
-          console.log(err);
-      }
-     
-      }
+            if (rows1.length > 0) {
+                for (let index = 0; index < rows1.length; index++) {
+                    option += `<option value="${rows1[index].id}">${rows1[index].cos}</option>`;
 
-//   if(data.subject!=''){
-//   mysqlConnection.query('SELECT scode,dv FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
-//     if (!err) {
-//         let subjectDetails = row[0];
+                }
 
-//     mysqlConnection.query('SELECT id,cos FROM `nba_co` WHERE fid=? AND scode=? AND academic_year=? AND hod=?', [data.fid, subjectDetails.scode, data.academicYear, '1'], (err, rows, fields) => {
-//         if (!err) {
-//             for (let index = 0; index < rows.length; index++) {
-//                 option += `<option value="${rows[index].id}">${rows[index].cos}</option>`;
-                
-//             }
-           
-//             res.send(option);
-//         } else {
-//             console.log(err);
-//         }
-       
-//     })
-// }
-// else {
-//     console.log(err);
-// }
-   
-// })
-// }
+                res.send(option);
+            } else {
+                console.log(err);
+            }
+
+
+        }
+        else {
+            console.log(err);
+        }
+
+    }
+
+    //   if(data.subject!=''){
+    //   mysqlConnection.query('SELECT scode,dv FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
+    //     if (!err) {
+    //         let subjectDetails = row[0];
+
+    //     mysqlConnection.query('SELECT id,cos FROM `nba_co` WHERE fid=? AND scode=? AND academic_year=? AND hod=?', [data.fid, subjectDetails.scode, data.academicYear, '1'], (err, rows, fields) => {
+    //         if (!err) {
+    //             for (let index = 0; index < rows.length; index++) {
+    //                 option += `<option value="${rows[index].id}">${rows[index].cos}</option>`;
+
+    //             }
+
+    //             res.send(option);
+    //         } else {
+    //             console.log(err);
+    //         }
+
+    //     })
+    // }
+    // else {
+    //     console.log(err);
+    // }
+
+    // })
+    // }
 
 });
 
 app.post('/getcloption', async (req, res) => {
     let data = req.body;
     var option = `<option value="">Select CL</option>`;
-  
+
     let rows = await runQuery(`SELECT id,colevel FROM nba_co_level WHERE cid='${data.cid}' AND status='1' `)
-        if (rows.length > 0) {
-            for (let index = 0; index < rows.length; index++) {
-            
-                option += `<option value="${rows[index].id}">${rows[index].colevel}</option>`;
-                
-            }
-           
-            res.send(option);
-        } else {
-            console.log(err);
+    if (rows.length > 0) {
+        for (let index = 0; index < rows.length; index++) {
+
+            option += `<option value="${rows[index].id}">${rows[index].colevel}</option>`;
+
         }
-       
-   
+
+        res.send(option);
+    } else {
+        console.log(err);
+    }
+
+
 
 
     // mysqlConnection.query('SELECT id,colevel FROM `nba_co_level` WHERE cid=? AND status=?', [data.cid, '1'], (err, rows, fields) => {
     //     if (!err) {
     //         for (let index = 0; index < rows.length; index++) {
-            
+
     //             option += `<option value="${rows[index].id}">${rows[index].colevel}</option>`;
-                
+
     //         }
-           
+
     //         res.send(option);
     //     } else {
     //         console.log(err);
     //     }
-       
+
     // })
 });
 
@@ -5156,9 +5156,9 @@ app.post('/addlsnpln', async (req, res) => {
     let data = req.body;
     let rows = await runQuery(`INSERT into tlsnpln (fid,fname,scode,sname,sem,dv,dept,did,planned_date,tdate,mdno,topicd,sub_topic,teaching_methods,teaching_aids,assignment_tool,status,class_id,hod,vp,date,academic_year) values ('${data.fid}','${data.fname}','${data.scode}','${data.sname}','${data.sem}','${data.dv}','${data.dept}','${data.did}','${data.planned_date}','${data.tdate}','${data.mdno}','${data.topicd}','${data.sub_topic}','${data.teaching_methods}','${data.teaching_aids}','${data.assignment_tool}','${data.status}','${data.class_id}','${data.hod}','${data.vp}','${data.date}','${data.academic_year}') `)
     if (rows.affectedRows > 0)
-            res.send('1');
-        else
-            console.log(err);
+        res.send('1');
+    else
+        console.log(err);
     // mysqlConnection.query('INSERT into tlsnpln (fid,fname,scode,sname,sem,dv,dept,did,planned_date,tdate,mdno,topicd,sub_topic,teaching_methods,teaching_aids,assignment_tool,status,class_id,hod,vp,date,academic_year) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  [data.fid, data.fname, data.scode, data.sname, data.sem, data.dv, data.dept, data.did, data.planned_date, data.tdate, data.mdno, data.topicd, data.sub_topic, data.teaching_methods, data.teaching_aids, data.assignment_tool, data.status, data.class_id, data.hod, data.vp, data.date, data.academic_year ], (err, rows) => {
     //     if (!err)
     //         res.send('1');
@@ -5169,8 +5169,8 @@ app.post('/addlsnpln', async (req, res) => {
 
 app.post('/addsque', (req, res) => {
     let data = req.body;
-    
-   mysqlConnection.query('INSERT into nba_question (fid,exm_date,cid,did,dv,sem,scode,internal,qno,quest,marks,max_marks,cos,co_id,colevel,academic_year,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',  [data.fid, data.exm_date, data.cid, data.did, data.dv, data.sem, data.scode, data.internal, data.qno, data.quest, data.marks, data.max_marks, data.cos, data.co_id, data.colevel, data.academic_year, data.status ], (err, rows) => {
+
+    mysqlConnection.query('INSERT into nba_question (fid,exm_date,cid,did,dv,sem,scode,internal,qno,quest,marks,max_marks,cos,co_id,colevel,academic_year,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [data.fid, data.exm_date, data.cid, data.did, data.dv, data.sem, data.scode, data.internal, data.qno, data.quest, data.marks, data.max_marks, data.cos, data.co_id, data.colevel, data.academic_year, data.status], (err, rows) => {
         if (!err)
             res.send('1');
         else
@@ -5180,7 +5180,7 @@ app.post('/addsque', (req, res) => {
 
 app.post('/addheaders', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('INSERT into fees_head (head_name,cid,academic_year,year) values (?,?,?,?)',  [data.head_name, data.cid, data.academic_year, data.year], (err, rows) => {
+    mysqlConnection.query('INSERT into fees_head (head_name,cid,academic_year,year) values (?,?,?,?)', [data.head_name, data.cid, data.academic_year, data.year], (err, rows) => {
         if (!err)
             res.send('1');
         else
@@ -5190,40 +5190,40 @@ app.post('/addheaders', (req, res) => {
 
 app.post('/getheadersdetails', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('SELECT id,head_name from fees_head WHERE cid=?',  [data.cid], (err, rows, fields) => {
+    mysqlConnection.query('SELECT id,head_name from fees_head WHERE cid=?', [data.cid], (err, rows, fields) => {
         if (!err)
-            res.send(rows);  
-        else 
+            res.send(rows);
+        else
             console.log(err);
     })
 });
 
 app.post('/headerdetail', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('SELECT head_name from fees_head WHERE id=?',  [data.id], (err, rows, fields) => {
+    mysqlConnection.query('SELECT head_name from fees_head WHERE id=?', [data.id], (err, rows, fields) => {
         if (!err)
-            res.send(rows);  
-        else 
-            console.log(err); 
-    })  
+            res.send(rows);
+        else
+            console.log(err);
+    })
 });
 
 app.post('/headerdelete', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('DELETE from fees_head WHERE id=?',  [data.id], (err, rows, fields) => {
+    mysqlConnection.query('DELETE from fees_head WHERE id=?', [data.id], (err, rows, fields) => {
         if (!err)
-            res.send('1');  
-        else 
+            res.send('1');
+        else
             console.log(err);
     })
 });
 
 app.post('/updateheader', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('UPDATE fees_head set head_name=? WHERE id=?',  [data.perticular, data.id], (err, rows, fields) => {
+    mysqlConnection.query('UPDATE fees_head set head_name=? WHERE id=?', [data.perticular, data.id], (err, rows, fields) => {
         if (!err)
-            res.send('1');  
-        else 
+            res.send('1');
+        else
             console.log(err);
     })
 });
@@ -5240,254 +5240,254 @@ app.post('/getfeedetails', async (req, res) => {
     let data = req.body;
     let result = ``;
     let total_fix;
-    let total_pay;  
-    let fee_paid;  
-    let   rows=await db.query(`select * from fee_fixation where student_id='${data.usn}' group by year order by year `)
+    let total_pay;
+    let fee_paid;
+    let rows = await db.query(`select * from fee_fixation where student_id='${data.usn}' group by year order by year `)
     let array1 = [];
-    
-//     for(let index=0; index<rows.length; index++){  
-//      // array1 = {'year':rows[index].year};
-//     //  console.log('nn'+array1);
-      
-//     let year = rows[index].year;
-//     let   res=await db.query(`select *, (select sum(fee) from fee_fixation where student_id='${data.usn}' and year='${year}')as total_fix_fee, (select sum(paid_fee) from fee_transaction where student_id='${data.usn}' and year='${year}')as total_paid_fee, (select distinct student_id from fee_transaction where student_id='${data.usn}' and year='${year}')as pay  from fee_fixation as f where student_id='${data.usn}' and year='${year}' `)
-//      result += ` <tr>
-//       <td rowspan='${res.length+1}'>${year}</td>`;
-     
-//          for(let i=0; i<res.length; i++){           
-//           array1[year]=res[i];
-//           if(!res[i].pay){
-//           fee_paid = 0;
-//           }else{
-//           let pay_fee = await db.query(`select  sum(paid_fee) as fee_paid from fee_transaction where student_id='${data.usn}' and year='${res[i].year}' and header_name='${res[i].header_name}'  `);
-//           const element = pay_fee[index];
-//           fee_paid = element.fee_paid;
-//          // array1[year][i].total_paid_fee=element.fee_paid;
-//          console.log(array1[year][i]);
-//           }
-//           result += `   
-//                      <td>${res[i].header_name}</td>
-//                       <td>${res[i].fee}</td>
-//                       <td>${fee_paid}</td>
-//                       <td>${res[i].fee - fee_paid}</td>`;
-//                       // <td>${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :'<input type="text" style="width:30%;float:left" class="form-control" name="recno[]" id="recno" placeholder="Receipt no"><input type="date" style="width:30%;float:left" id="pdate" name="pdate[]" class="form-control"><input type="number" style="width:30%;" class="form-control" name="amount[]" id="amount" placeholder="Enter Amount">'}</td>
-//                        result += ` <td>
-//                        ${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :`<Link to='/addfee' className='btn btn-primary'> Pay </Link>`}
-//                        </td>
-//                        </tr>`;
-//                       total_fix = res[i].total_fix_fee;
-//                       total_pay = res[i].total_paid_fee;
-//          } 
-//          if(!total_pay){
-//            total_pay=0;
-//          }
-//          result +=`<tr>
-//                   <td>Total</td>
-//                   <td>${total_fix}</td>
-//                   <td>${total_pay}</td>
-//                   <td>${total_fix - total_pay}</td>
-//                   <td></td>
-//                   </tr><br/>`;       
-//         // result +=`<tr><td class='text-center' colspan='6' ><button class='btn btn-primary' onClick={add()} >Submit </button></td></tr>`
-// }   
-// //console.log(array1);
-//             res.send(result);  
-//           //  console.log(result) ;   
+
+    //     for(let index=0; index<rows.length; index++){  
+    //      // array1 = {'year':rows[index].year};
+    //     //  console.log('nn'+array1);
+
+    //     let year = rows[index].year;
+    //     let   res=await db.query(`select *, (select sum(fee) from fee_fixation where student_id='${data.usn}' and year='${year}')as total_fix_fee, (select sum(paid_fee) from fee_transaction where student_id='${data.usn}' and year='${year}')as total_paid_fee, (select distinct student_id from fee_transaction where student_id='${data.usn}' and year='${year}')as pay  from fee_fixation as f where student_id='${data.usn}' and year='${year}' `)
+    //      result += ` <tr>
+    //       <td rowspan='${res.length+1}'>${year}</td>`;
+
+    //          for(let i=0; i<res.length; i++){           
+    //           array1[year]=res[i];
+    //           if(!res[i].pay){
+    //           fee_paid = 0;
+    //           }else{
+    //           let pay_fee = await db.query(`select  sum(paid_fee) as fee_paid from fee_transaction where student_id='${data.usn}' and year='${res[i].year}' and header_name='${res[i].header_name}'  `);
+    //           const element = pay_fee[index];
+    //           fee_paid = element.fee_paid;
+    //          // array1[year][i].total_paid_fee=element.fee_paid;
+    //          console.log(array1[year][i]);
+    //           }
+    //           result += `   
+    //                      <td>${res[i].header_name}</td>
+    //                       <td>${res[i].fee}</td>
+    //                       <td>${fee_paid}</td>
+    //                       <td>${res[i].fee - fee_paid}</td>`;
+    //                       // <td>${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :'<input type="text" style="width:30%;float:left" class="form-control" name="recno[]" id="recno" placeholder="Receipt no"><input type="date" style="width:30%;float:left" id="pdate" name="pdate[]" class="form-control"><input type="number" style="width:30%;" class="form-control" name="amount[]" id="amount" placeholder="Enter Amount">'}</td>
+    //                        result += ` <td>
+    //                        ${res[i].fee - fee_paid === 0? '<center><strong style="color:green">FEE PAID</strong></center>' :`<Link to='/addfee' className='btn btn-primary'> Pay </Link>`}
+    //                        </td>
+    //                        </tr>`;
+    //                       total_fix = res[i].total_fix_fee;
+    //                       total_pay = res[i].total_paid_fee;
+    //          } 
+    //          if(!total_pay){
+    //            total_pay=0;
+    //          }
+    //          result +=`<tr>
+    //                   <td>Total</td>
+    //                   <td>${total_fix}</td>
+    //                   <td>${total_pay}</td>
+    //                   <td>${total_fix - total_pay}</td>
+    //                   <td></td>
+    //                   </tr><br/>`;       
+    //         // result +=`<tr><td class='text-center' colspan='6' ><button class='btn btn-primary' onClick={add()} >Submit </button></td></tr>`
+    // }   
+    // //console.log(array1);
+    //             res.send(result);  
+    //           //  console.log(result) ;   
 
 });
 
 app.post('/gettransactiondetails', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('select * from fee_transaction where student_id=? and update_status=? order by year,date',  [data.usn, '0'], (err, rows, fields) => {
+    mysqlConnection.query('select * from fee_transaction where student_id=? and update_status=? order by year,date', [data.usn, '0'], (err, rows, fields) => {
         if (!err)
-         res.send(rows); 
+            res.send(rows);
         //res.send([rows,resu]); 
         // res.send([rows,res]); 
-       else   
-           console.log(err);
+        else
+            console.log(err);
     })
 });
 
 app.post('/gethistory', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('select * from fee_transaction where student_id=? and update_status=? order by year',  [data.usn, '1'], (err, rows, fields) => {
+    mysqlConnection.query('select * from fee_transaction where student_id=? and update_status=? order by year', [data.usn, '1'], (err, rows, fields) => {
         if (!err)
-         res.send(rows); 
+            res.send(rows);
         //res.send([rows,resu]); 
         // res.send([rows,res]); 
-       else   
-           console.log(err);
+        else
+            console.log(err);
     })
 });
 
 app.post('/gettransaction', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('select * from fee_transaction where id=? ',  [data.id], (err, rows, fields) => {
+    mysqlConnection.query('select * from fee_transaction where id=? ', [data.id], (err, rows, fields) => {
         if (!err)
-         res.send(rows); 
+            res.send(rows);
         //res.send([rows,resu]); 
         // res.send([rows,res]); 
-       else   
-           console.log(err);
+        else
+            console.log(err);
     })
 });
 
 app.post('/updatetransaction', (req, res) => {
     let data = req.body;
-    mysqlConnection.query('UPDATE fee_transaction set paid_fee=? where id=? ',  [data.payf, data.id], (err, rows, fields) => {
-        if (!err){
-            mysqlConnection.query('INSERT into fee_transaction (cid,did,student_id,receipt_no,header_name,paid_fee,total,year,date,Description,file,update_status) values (?,?,?,?,?,?,?,?,?,?,?,?)',  [data.cid, data.did, data.student_id, data.receipt_no, data.header_name, data.old_payf, data.total, data.year, data.date, data.description, '', data.update_status], (err, rows, fields) => {
-                if(!err)
-                res.send('1');
-                else   
-           console.log(err);
+    mysqlConnection.query('UPDATE fee_transaction set paid_fee=? where id=? ', [data.payf, data.id], (err, rows, fields) => {
+        if (!err) {
+            mysqlConnection.query('INSERT into fee_transaction (cid,did,student_id,receipt_no,header_name,paid_fee,total,year,date,Description,file,update_status) values (?,?,?,?,?,?,?,?,?,?,?,?)', [data.cid, data.did, data.student_id, data.receipt_no, data.header_name, data.old_payf, data.total, data.year, data.date, data.description, '', data.update_status], (err, rows, fields) => {
+                if (!err)
+                    res.send('1');
+                else
+                    console.log(err);
             })
-        }       
-       else   
-           console.log(err);
+        }
+        else
+            console.log(err);
     })
 });
 
 app.post('/getquesdetails', (req, res) => {
     let data = req.body;
-    if(data.subject!=''){
+    if (data.subject != '') {
         mysqlConnection.query('SELECT scode,dv FROM `subject` s WHERE id=?', [data.subject], (err, row, fields) => {
-          if (!err) {
-              let subjectDetails = row[0];
-    mysqlConnection.query('select *,(select cos from nba_co where id=n.co_id)as co from nba_question as n where fid=? and scode=? and dv=? and academic_year=? and internal=? ',  [data.fid, subjectDetails['scode'], subjectDetails['dv'], data.academic_year, data.internal], (err, rows, fields) => {
-        if (!err)
-         res.send(rows); 
-        //res.send([rows,resu]); 
-        // res.send([rows,res]); 
-    
-})
-          }
-       else   
-           console.log(err);
-    })
-}
+            if (!err) {
+                let subjectDetails = row[0];
+                mysqlConnection.query('select *,(select cos from nba_co where id=n.co_id)as co from nba_question as n where fid=? and scode=? and dv=? and academic_year=? and internal=? ', [data.fid, subjectDetails['scode'], subjectDetails['dv'], data.academic_year, data.internal], (err, rows, fields) => {
+                    if (!err)
+                        res.send(rows);
+                    //res.send([rows,resu]); 
+                    // res.send([rows,res]); 
+
+                })
+            }
+            else
+                console.log(err);
+        })
+    }
 });
 
 app.post('/getevents', (req, res) => {
     let data = req.body;
     var option = `<option value="">Select Event Type</option>`;
-    mysqlConnection.query('select etype from eventsofcoe where cid=? and role=? ',  [data.cid, data.role], (err, rows, fields) => {
-      // console.log(rows);
-        if (!err){
-        for (let index = 0; index < rows.length; index++) {
-            option += `<option value="${rows[index].etype}">${rows[index].etype}</option>`;
-            
+    mysqlConnection.query('select etype from eventsofcoe where cid=? and role=? ', [data.cid, data.role], (err, rows, fields) => {
+        // console.log(rows);
+        if (!err) {
+            for (let index = 0; index < rows.length; index++) {
+                option += `<option value="${rows[index].etype}">${rows[index].etype}</option>`;
+
+            }
+            res.send(option);
         }
-        res.send(option); 
-    }
-         
-       else   
-           console.log(err);
+
+        else
+            console.log(err);
     })
 });
 
 app.post('/addeventdetail', (req, res) => {
     let data = req.body;
-   // console.log(data);
-    mysqlConnection.query('INSERT into calendar_events (title,descp,start,end,etype,sem,year,academic_year,cid,did,status,user_id) values (?,?,?,?,?,?,?,?,?,?,?,?)',  [data.title, data.descp, data.start, data.end, data.etype, data.sem, data.year, data.academic_year, data.cid, data.did, data.status, data.user_id], (err, rows) => {
+    // console.log(data);
+    mysqlConnection.query('INSERT into calendar_events (title,descp,start,end,etype,sem,year,academic_year,cid,did,status,user_id) values (?,?,?,?,?,?,?,?,?,?,?,?)', [data.title, data.descp, data.start, data.end, data.etype, data.sem, data.year, data.academic_year, data.cid, data.did, data.status, data.user_id], (err, rows) => {
         if (!err)
             res.send('1');
         else
             console.log(err);
-    }) 
+    })
 });
 
 app.post('/chkevents', (req, res) => {
     let data = req.body;
     console.log(data);
     let did;
-    let  new1
-    let etype ;
+    let new1
+    let etype;
     let events = ``;
     let result;
     let allevents = "";
     let no = 1;
-    if(data.role === 'Principal'){
+    if (data.role === 'Principal') {
         did = 'all';
-    }else if(data.role === 'HOD'){
+    } else if (data.role === 'HOD') {
         did = data.did;
     }
     mysqlConnection.query(`select etype from eventsofcoe where (cid='${data.cid}' or cid=0) and role='${data.role}' and etype not in(select etype from calendar_events where cid='${data.cid}' and did='${did}' and sem='${data.sem}' and year='${data.year}' and academic_year='${data.academic_year}' and status=1)`, (err, rows) => {
-        if (!err){
-            if(rows.length == 0){
-                result = 1;			
+        if (!err) {
+            if (rows.length == 0) {
+                result = 1;
             } else {
-               new1 = "\n";
-            for(let index=0; index<rows.length; index++) {
-                etype = rows[index].etype;
-                events = allevents+etype+new1;
-                allevents = events;
-                no++;
+                new1 = "\n";
+                for (let index = 0; index < rows.length; index++) {
+                    etype = rows[index].etype;
+                    events = allevents + etype + new1;
+                    allevents = events;
+                    no++;
+                }
+                result = allevents;
             }
-            result = allevents;
-        }
-      //  console.log(rows.length);
-       // console.log(result);
-    
-    if(result != 1){
-        res.send(allevents);
-        
-    } else {       
-		
-		mysqlConnection.query(`UPDATE calendar_events set freeze=1 where cid='${data.cid}' and did='${did}' and sem='${data.sem}' and year='${year}' and status=1 and academic_year='${data.academic_yer}'    ` , (err, rows) => {
-            if (!err)
-                res.send('1');
-            else
-                console.log(err);
-        })       
-       
-    } 
+            //  console.log(rows.length);
+            // console.log(result);
 
-    }
-        else{
+            if (result != 1) {
+                res.send(allevents);
+
+            } else {
+
+                mysqlConnection.query(`UPDATE calendar_events set freeze=1 where cid='${data.cid}' and did='${did}' and sem='${data.sem}' and year='${year}' and status=1 and academic_year='${data.academic_yer}'    `, (err, rows) => {
+                    if (!err)
+                        res.send('1');
+                    else
+                        console.log(err);
+                })
+
+            }
+
+        }
+        else {
             console.log(err);
         }
-    }) 
+    })
 });
 
 app.post('/departmentoption', (req, res) => {
     let data = req.body;
     var option = `<option value="">Select Department</option>`;
-    if(data.role == 'HOD'){
+    if (data.role == 'HOD') {
         mysqlConnection.query('SELECT id,name FROM `dept` WHERE cid=? AND id=? AND status=?', [data.cid, data.did, '1'], (err, rows, fields) => {
             if (!err) {
                 option += `<option value="all">All</option>`;
                 for (let index = 0; index < rows.length; index++) {
-                
+
                     option += `<option value="${rows[index].id}">${rows[index].name}</option>`;
-                    
+
                 }
-               
+
                 res.send(option);
             } else {
                 console.log(err);
             }
-           
+
         })
 
     }
-    else if(data.role == 'Principal'){
-    mysqlConnection.query('SELECT id,name FROM `dept` WHERE cid=? AND status=?', [data.cid, '1'], (err, rows, fields) => {
-        if (!err) {
-            option += `<option value="all">All</option>`;
-            for (let index = 0; index < rows.length; index++) {
-            
-                option += `<option value="${rows[index].id}">${rows[index].name}</option>`;
-                
+    else if (data.role == 'Principal') {
+        mysqlConnection.query('SELECT id,name FROM `dept` WHERE cid=? AND status=?', [data.cid, '1'], (err, rows, fields) => {
+            if (!err) {
+                option += `<option value="all">All</option>`;
+                for (let index = 0; index < rows.length; index++) {
+
+                    option += `<option value="${rows[index].id}">${rows[index].name}</option>`;
+
+                }
+
+                res.send(option);
+            } else {
+                console.log(err);
             }
-           
-            res.send(option);
-        } else {
-            console.log(err);
-        }
-       
-    })
-}
+
+        })
+    }
 });
 
 app.post('/addDivision', async (req, res) => {
@@ -5548,8 +5548,7 @@ app.post('/updateDivision', async (req, res) => {
     let added = 0;
     for (var i = 0; i < studentId.length; i++) {
         let rows = await db.query(`UPDATE student_academic SET dv='${data.dv}' and id='${studentId[i]}'`)
-        if(rows.affectedRows>0)
-        {
+        if (rows.affectedRows > 0) {
             added++;
         }
     }
@@ -5563,13 +5562,13 @@ app.post('/admittedStudentList', async (req, res) => {
     if (data.cid == 1) {
         if (data.role == "Admission Dean") {
             let rows = await db.query(`SELECT *,(SELECT name FROM dept WHERE id=sd.did) as dept, (SELECT academic_type FROM dept WHERE id=sd.did) as academic_type FROM student_details sd  WHERE cid='${data.cid}' AND admission_dean=''  AND academic_year=(SELECT MAX(academic_year) AS dbacademicYear FROM academic_year WHERE cid='${data.cid}') ORDER BY name ASC`)
-        res.send(rows);
+            res.send(rows);
         } else if (data.role == "Registrar") {
             let rows = await db.query(`SELECT * ,(SELECT name FROM dept WHERE id=sd.did) as dept, (SELECT academic_type FROM dept WHERE id=sd.did) as academic_type FROM student_details sd WHERE cid='${data.cid}'  AND admission_dean!='' AND admission_dean!='rejected' AND registrar=''  AND academic_year=(SELECT MAX(academic_year) AS dbacademicYear FROM academic_year WHERE cid='${data.cid}') ORDER BY name ASC`)
-        res.send(rows);
+            res.send(rows);
         } else if (data.role == "VP admin") {
             let rows = await db.query(`SELECT * ,(SELECT name FROM dept WHERE id=sd.did) as dept, (SELECT academic_type FROM dept WHERE id=sd.did) as academic_type FROM student_details sd WHERE cid='${data.cid}'  AND admission_dean!='' AND admission_dean!='rejected' AND registrar!='' AND registrar!='rejected' AND vp_admin='' AND academic_year=(SELECT MAX(academic_year) AS dbacademicYear FROM academic_year WHERE cid='${data.cid}') ORDER BY name ASC`)
-        res.send(rows);
+            res.send(rows);
         } else if (data.role == "Principal") {
             let rows = await db.query(`SELECT * ,(SELECT name FROM dept WHERE id=sd.did) as dept, (SELECT academic_type FROM dept WHERE id=sd.did) as academic_type FROM student_details sd WHERE cid='${data.cid}'  AND admission_dean!='' AND admission_dean!='rejected'  AND registrar!='' AND registrar!='rejected' AND  vp_admin!='' AND vp_admin!='rejected' AND principal='' AND academic_year=(SELECT MAX(academic_year) AS dbacademicYear FROM academic_year WHERE cid='${data.cid}') ORDER BY name ASC`)
             res.send(rows);
@@ -5577,24 +5576,24 @@ app.post('/admittedStudentList', async (req, res) => {
     } else if (data.cid == 6) {
         let rows = await db.query(`SELECT * ,(SELECT name FROM dept WHERE id=sd.did) as dept, (SELECT academic_type FROM dept WHERE id=sd.did) as academic_type FROM student_details sd WHERE cid='${data.cid}' AND academic_year='${data.academic_year}' AND status=0`)
         res.send(rows);
-    }else{
+    } else {
         res.send(`${-1}`);
     }
-    
+
 });
 
 app.post('/getDbAcademicYear', async (req, res) => {
     let data = req.body;
     let rows = await db.query('SELECT MAX(academic_year) AS dbacademicYear FROM `academic_year` WHERE cid=?', [data.cid])
-        res.send(rows[0]);
-       
+    res.send(rows[0]);
+
 });
 
 app.post('/getadmittedstudent', async (req, res) => {
     let data1 = req.body;
     let rows = await db.query(`SELECT *,(SELECT iname FROM college WHERE id=sd.cid) as collegeName,(SELECT name FROM dept WHERE id=sd.did) as dept FROM student_details sd WHERE cid='${data1.cid}' AND academic_year='${data1.academicYear}'`)
-        res.send(rows)
-       
+    res.send(rows)
+
 
 });
 
@@ -5790,14 +5789,14 @@ app.post('/getSisClgSub', async (req, res) => {
 app.post('/getWorkLoadReport', async (req, res) => {
     let data = req.body;
     let wt = '';
-let did = data.department
-    let sudentCount = function(cid, did, sem, acdYear) {
+    let did = data.department
+    let sudentCount = function (cid, did, sem, acdYear) {
         let count = db.query(`SELECT id FROM student_academic WHERE did='${did}' and cid='${cid}' and academic_year='${acdYear}' and sem in (${sem})`)
         return count
     }
 
-    let xSubject = function(acdYear, did, cid, sType, fid, sem) {
-        return db.query(`SELECT *  FROM subject WHERE academic_year='${acdYear}' and did='${did}' and cid='${cid}' and stype='${sType}'  and fid='${fid}'  and sem%2='${sem}'`)     
+    let xSubject = function (acdYear, did, cid, sType, fid, sem) {
+        return db.query(`SELECT *  FROM subject WHERE academic_year='${acdYear}' and did='${did}' and cid='${cid}' and stype='${sType}'  and fid='${fid}'  and sem%2='${sem}'`)
     }
 
     if (data.cid == 1 || data.cid == 3 || data.cid == 6 || data.cid == 5 || data.cid == 4) {
@@ -5843,7 +5842,7 @@ let did = data.department
         (SELECT GROUP_CONCAT(sname) FROM subject_other WHERE fid=a.id AND academic_year='${data.academicYear}')as sisfile
         FROM admin a WHERE did='${did}' and cid='${data.cid}'  AND role='Teaching' AND status='Approved' ORDER BY a.sl ASC`)
     }
-    
+
     rows = rows[0]
     if (data.semType == 1) {
         semister = 'Odd';
@@ -5903,85 +5902,249 @@ let did = data.department
                                         <th rowspan="2">Total</th>
                                     </thead> <tbody style="text-align:center">
                                     <tr>`
-    let iYearCount=0;                              
-if (did == 6) {
-    if (data.semType == 1) {
-        semi = 1;
+    let iYearCount = 0;
+    if (did == 6) {
+        if (data.semType == 1) {
+            semi = 1;
+        } else {
+            semi = 2;
+        }
+        iYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
+        wt += `<td>${iYearCount.length}</td><td>0</td><td>0</td><td>0</td><td>${iYearCount.length}</td>`;
     } else {
-        semi = 2;
+        wt += `<td>${iYearCount}</td>`;
+
+        if (data.semType == 1) {
+            semi = 3;
+        } else {
+            semi = 4;
+        }
+        let iiYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
+        wt += `<td>${iiYearCount.length}</td>`;
+
+        if (data.semType == 1) {
+            semi = 5;
+        } else {
+            semi = 6;
+        }
+        let iiiYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
+        wt += `<td>${iiiYearCount.length}</td>`;
+
+        if (data.semType == 1) {
+            semi = 7;
+        } else {
+            semi = 8;
+        }
+        let iiiiYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
+        wt += `<td>${iiiiYearCount.length}</td>`;
+
+        total = iiiiYearCount.length + iiiYearCount.length + iiYearCount.length;
+        wt += `<td>${total}</td>`;
     }
-    iYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
-wt += `<td>${iYearCount.length}</td><td>0</td><td>0</td><td>0</td><td>${iYearCount.length}</td>`;
-}else{
-wt += `<td>${iYearCount}</td>`;
+    xfacSubjectth = await xSubject(data.academicYear, did, data.cid, 'theory', '0', data.semType);
+    xfacSubjectlb = await xSubject(data.academicYear, did, data.cid, 'lab', '0', data.semType);
 
-if (data.semType == 1) {
-    semi = 3;
-} else {
-    semi = 4;
-}
-let iiYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
-wt += `<td>${iiYearCount.length}</td>`;
+    tsub = '';
+    for (let index = 0; index < xfacSubjectth.length; index++) {
+        tsub += index + 1 + ")" + xfacSubjectth[index].scode + "<br>"
+    }
+    lsub = '';
+    for (let index = 0; index < xfacSubjectlb.length; index++) {
+        lsub += index + 1 + ")" + xfacSubjectlb[index].scode + "<br>"
+    }
 
-if (data.semType == 1) {
-    semi = 5;
-} else {
-    semi = 6;
-}
-let iiiYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
-wt += `<td>${iiiYearCount.length}</td>`;
-
-if (data.semType == 1) {
-    semi = 7;
-} else {
-    semi = 8;
-}
-let iiiiYearCount = await sudentCount(data.cid, did, semi, data.academicYear);
-wt += `<td>${iiiiYearCount.length}</td>`;
-
-total = iiiiYearCount.length + iiiYearCount.length+ iiYearCount.length;
-wt += `<td>${total}</td>`;
-}
-xfacSubjectth = await xSubject(data.academicYear, did, data.cid, 'theory', '0', data.semType);
-xfacSubjectlb = await xSubject(data.academicYear, did, data.cid, 'lab', '0', data.semType);
-
-tsub='';
-for (let index = 0; index < xfacSubjectth.length; index++) {
-    tsub+= index+1 + ")" + xfacSubjectth[index].scode + "<br>"
-}
-lsub='';
-for (let index = 0; index < xfacSubjectlb.length; index++) {
-    lsub+= index+1 + ")" + xfacSubjectlb[index].scode + "<br>"
-}
-
-wt+=`<td>${tsub}</td><td>${lsub}</td><td>${rows.uncentportfolio}</td><td>${rows.undeptportfolio}</td>`
-wt += `</table>
+    wt += `<td>${tsub}</td><td>${lsub}</td><td>${rows.uncentportfolio}</td><td>${rows.undeptportfolio}</td>`
+    wt += `</table>
 </div>
 `;
     res.send(wt)
-}); 
+});
 app.post('/getsubtopic', async (req, res) => {
     let data = req.body;
-    if(data.topic!=''){
+    if (data.topic != '') {
         let rows = await runQuery(`SELECT scode,sname,fname,sem,did,dept,dv FROM subject WHERE id='${data.subject}'`)
-    let subjectDetails = rows[0];
-    let lessonPlan = await runQuery(`SELECT topicd FROM tlsnpln WHERE id='${data.topic}}'`)
-    let subtopics = await runQuery(`SELECT id,sub_topic FROM tlsnpln WHERE scode='${subjectDetails.scode}' AND sname='${subjectDetails.sname}' AND
+        let subjectDetails = rows[0];
+        let lessonPlan = await runQuery(`SELECT topicd FROM tlsnpln WHERE id='${data.topic}}'`)
+        let subtopics = await runQuery(`SELECT id,sub_topic FROM tlsnpln WHERE scode='${subjectDetails.scode}' AND sname='${subjectDetails.sname}' AND
     fname='${subjectDetails.fname}' AND sem='${subjectDetails.sem}' AND dv='${subjectDetails.dv}' AND dept='${subjectDetails.dept}' AND did='${subjectDetails.did}' AND topicd='${lessonPlan[0].topicd}' AND (status='' or status='Not Complete') AND sub_topic!=''`);
-    
-    let option = `<option value=''>Select sub topic</option>`;
-    let a= 0;
 
-    for (let i = 0; i < subtopics.length; i++) {
-        const element = subtopics[i];
-        option+=`<option value='${element.id}'>${element.sub_topic}</option>`;
-        a++;
+        let option = `<option value=''>Select sub topic</option>`;
+        let a = 0;
+
+        for (let i = 0; i < subtopics.length; i++) {
+            const element = subtopics[i];
+            option += `<option value='${element.id}'>${element.sub_topic}</option>`;
+            a++;
+        }
+
+        if (a == 0) {
+            option = `<option value='0'>No sub topic</option>`;
+        }
+        // console.log(option)
+        res.send(option)
+    }
+});
+
+app.post('/getemployeeeoptionforcwfwitness2', async (req, res) => {
+    let data = req.body;
+    let option = `<option value="">Select Employee</option>`;
+    let rows = await runQuery(`SELECT id,name,(SELECT GROUP_CONCAT(role_name) FROM user_role WHERE fid=a.id ORDER BY prt ASC limit 1) roles FROM admin a WHERE cid='${data.cid}' AND did='${data.did}' AND status='approved' AND id!='${data.id}'  ORDER BY name ASC`);
+    for (let index = 0; index < rows.length; index++) {
+        const element = rows[index];
+        option += `<option value="${element.id}">${element.name} (${element.roles})</option>`;
     }
 
-    if(a == 0){
-        option = `<option value='0'>No sub topic</option>`;
+    res.send(option);
+    // mysqlConnection.query(`SELECT id,name,(SELECT GROUP_CONCAT(role_name) FROM user_role WHERE fid=a.id ORDER BY prt ASC limit 1) roles FROM admin a WHERE cid='${data.cid}' AND did='${data.did}' AND status='approved'  ORDER BY name ASC`, (err, rows, fields) => {
+    //     if (!err) {
+    //         let option = `<option value="">Select Employee</option>`;
+    //         for (let index = 0; index < rows.length; index++) {
+    //             const element = rows[index];
+    //             option += `<option value="${element.id}">${element.name} (${element.roles})</option>`;
+    //         }
+
+    //         res.send(option);
+    //     }
+    //     else {
+    //         console.log(err);
+    //     }
+    // })
+});
+
+app.post('/getemployeeeoptionforcwfwitness3', async (req, res) => {
+    let data = req.body;
+    let option = `<option value="">Select Employee</option>`;
+    let rows = await runQuery(`SELECT id,name,(SELECT GROUP_CONCAT(role_name) FROM user_role WHERE fid=a.id ORDER BY prt ASC limit 1) roles FROM admin a WHERE cid='${data.cid}' AND did='${data.did}' AND status='approved' AND id NOT IN('${data.id1}','${data.id2}')  ORDER BY name ASC`);
+    for (let index = 0; index < rows.length; index++) {
+        const element = rows[index];
+        option += `<option value="${element.id}">${element.name} (${element.roles})</option>`;
     }
-    // console.log(option)
-    res.send(option)
+
+    res.send(option);
+    // mysqlConnection.query(`SELECT id,name,(SELECT GROUP_CONCAT(role_name) FROM user_role WHERE fid=a.id ORDER BY prt ASC limit 1) roles FROM admin a WHERE cid='${data.cid}' AND did='${data.did}' AND status='approved'  ORDER BY name ASC`, (err, rows, fields) => {
+    //     if (!err) {
+    //         let option = `<option value="">Select Employee</option>`;
+    //         for (let index = 0; index < rows.length; index++) {
+    //             const element = rows[index];
+    //             option += `<option value="${element.id}">${element.name} (${element.roles})</option>`;
+    //         }
+
+    //         res.send(option);
+    //     }
+    //     else {
+    //         console.log(err);
+    //     }
+    // })
+});
+
+app.post('/addcwfdetails', async (req, res) => {
+    let data = req.body;
+    let witness1details = await runQuery(`SELECT name FROM admin WHERE id='${data.witness1_id}'`);
+    let witness2details = await runQuery(`SELECT name FROM admin WHERE id='${data.witness2_id}'`);
+    let witness3details = await runQuery(`SELECT name FROM admin WHERE id='${data.witness3_id}'`);
+    let empdetails = await runQuery(`SELECT name FROM admin WHERE id='${data.empid}'`);
+    let deptdetails = await runQuery(`SELECT name FROM dept WHERE id='${data.did}'`);
+
+    let insertData = {
+        "empid": data.empid,
+        "emp_name": empdetails[0].name,
+        "cid": data.clg,
+        "dept": deptdetails[0].name,
+        "did": data.did,
+        "loan_amt": data.loan_amt,
+        "duration": data.duration,
+        "mnth_dedc": data.month_dedc,
+        "apdate": formatDate("db", Date()),
+        "bal_amt": data.loan_amt,
+        "aid": data.aid,
     }
+    await dbConnect();
+    let isInsert = await db.insert('sami_cwf_loan', insertData);
+    await dbDisconnect();
+    if (isInsert.insertId > 0) {
+        let isInsert2 = await runQuery(`INSERT INTO sami_cwf_wtness ( loan_id, witnes_id, witness_name,amt_paid,amt_bal,mnt_deduc,status)VALUES('${isInsert.insertId}','${data.witness1_id}','${witness1details[0].name}','0','0','0','0'),('${isInsert.insertId}','${data.witness2_id}','${witness2details[0].name}','0','0','0','0'),('${isInsert.insertId}','${data.witness3_id}','${witness3details[0].name}','0','0','0','0')`)
+        if (isInsert2.insertId) {
+            res.send(["Record Added", "success"]);
+        } else {
+            res.send(["CWF Loan Added But Witness Record Noyt Added", "warning"]);
+        }
+    } else {
+        res.send(["Record Not Added", "error"]);
+    }
+});
+
+app.post('/viewwitness', async (req, res) => {
+    let data = req.body;
+    let loans = await runQuery(`SELECT emp_name,loan_amt,paid_amt,bal_amt,(SELECT GROUP_CONCAT(witness_name) FROM sami_cwf_wtness WHERE loan_id=scl.id ORDER BY id ASC limit 1) AS witness FROM sami_cwf_loan scl WHERE (empid='${data.fid}' OR emp_name='${data.fid}')`);
+    res.send(loans);
+});
+
+app.post('/getemployeeeoptionforcwf', async (req, res) => {
+    let data = req.body;
+    let option = `<option value="">Select Employee</option>`;
+    let rows = await runQuery(`SELECT empid,emp_name FROM sami_cwf_loan a WHERE cid='${data.cid}' AND did='${data.did}' ORDER BY emp_name ASC`);
+    for (let index = 0; index < rows.length; index++) {
+        const element = rows[index];
+        option += `<option value="${element.empid}">${element.emp_name}</option>`;
+    }
+
+    res.send(option);
+});
+
+app.post('/loandetailsindividual', async (req, res) => {
+    let data = req.body;
+    let loans = await runQuery(`SELECT id,emp_name,loan_amt,paid_amt,bal_amt,(SELECT GROUP_CONCAT(witness_name) FROM sami_cwf_wtness WHERE loan_id=scl.id ORDER BY id ASC limit 1) AS witness,(SELECT iname FROM college WHERE id=scl.cid) AS iname FROM sami_cwf_loan scl WHERE empid='${data.fid}'`);
+    let result = `<h3 class="demo" align="center">${loans[0].iname}<br>
+    <strong class="demo">CWF Loan Transactions</strong>
+</h3>`;
+    for (let i = 0; i < loans.length; i++) {
+        const element = loans[i];
+        let witness = element.witness.split(",");
+        
+
+        result += `<div class="card">
+        <div class="card-header">
+            <strong class="card-title mr-5">Recovery From Dropout Candidate</strong><strong class="card-title mr-5"> Loan ${i + 1} </strong><strong class="card-title ml-5">Loan Amount : ${element.loan_amt}</strong>
+            <strong class="card-title ml-5" style="color:red">Balance Amount : ${element.bal_amt} </strong>
+            <strong class="card-title ml-5" style="color:green">Paid Amount : ${element.paid_amt}  </strong>
+    </div>
+    <div class="card-body">
+    Loan Of : ${element.emp_name}<br>
+    `;
+    for (let k = 0; k < witness.length; k++) {
+        result+= `<span class="font-weight-bold">${k + 1}) Witness Name : ${witness[k]}</span> <br>`;
+    }
+    result+=`<table class="table table-bordered">
+    <thead class="thead-dark">
+    <tr>
+    <th>SL NO</th>
+    <th>Paid Date</th>
+    <th>Mod Of Payment</th>
+    <th>Paid Amount</th>
+    <th>Balance Amount</th>
+    </tr>
+    </thead>
+    <tbody>`;
+        let transactions = await runQuery(`SELECT amt_deduc,bal_amt,for_month,pay_mod,date1 FROM sami_cwf_trans WHERE loan_id='${element.id}'`);
+        console.log(transactions.length)
+        for (let j = 0; j < transactions.length; j++) {
+            const element1 = transactions[j];
+            result += `
+        <tr>
+            <td>${j + 1}</td>
+            <td>${formatDate("", element1.date1)}</td>
+            <td>${numberWithCommas(element1.pay_mod)}</td>
+            <td>${numberWithCommas(element1.amt_deduc)}</td>
+            <td>${numberWithCommas(element1.bal_amt)}</td>
+        </tr>
+        `;
+        }
+        result += `
+    <tbody>
+    </table>
+    </div>
+    </div>`;
+    }
+
+    res.send(result);
 });

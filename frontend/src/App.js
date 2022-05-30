@@ -125,6 +125,9 @@ import AssingWorkload from './workload/AssingWorkload';
 import GetWorkloadReport from './workload/GetWorkloadReport';
 import WorkLoadReport from './workload/WorkLoadReport';
 import { AddCwf } from './pages/CWF/AddCwf';
+import { ViewCwfWitness } from './pages/CWF/ViewCwfWitness';
+import { IndividualLoanDetails } from './pages/CWF/IndividualLoanDetails';
+import { LoanDetailsIndividual } from './pages/CWF/LoanDetailsIndividual';
 
 
 function App() {
@@ -381,6 +384,9 @@ function App() {
               <Route path="/edittransaction" element={<EditTransaction baseURL={baseURL} userDetails={userDetails} />} />
               {/* Humera Module End */}
               <Route path="/addcwf" element={<AddCwf baseURL={baseURL} userDetails={userDetails} />} />
+              <Route path="/viewwitness" element={<ViewCwfWitness baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} />} />
+              <Route path="/individualloandetails" element={<IndividualLoanDetails baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} />} />
+              <Route path="/loandetailsindividual" element={<LoanDetailsIndividual baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} loader={loader} />} />
 
             </Routes>
           </BrowserRouter>
