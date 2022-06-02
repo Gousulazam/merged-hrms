@@ -67,6 +67,17 @@ import IaMarksEntry from './pages/attainment/IaMarksEntry';
 import MarksEntryIa from './pages/attainment/MarksEntryIa';
 import IaAttainmentSheet from './pages/attainment/IaAttainmentSheet';
 import SheetAttainmentIa from './pages/attainment/SheetAttainmentIa';
+import LabBatchAssign from './pages/subjects/LabBatchAssign';
+import LabBatchAssign1 from './pages/subjects/LabBatchAssign1';
+import SubjectAdd from './pages/subjects/ViewSubDetails/SubjectAdd';
+import StudentInternalR from './pages/subjects/StudentInternalR';
+import StudentInternalR1 from './pages/subjects/StudentInternalR1';
+import GenerateSubject from './pages/subjects/GenerateSubject';
+import EditSubjects from './pages/subjects/EditSubjects';
+import ViewSubjectAss from './pages/subjects/ViewSubjectAss';
+import ViewSubjectAssignedToStdt from './pages/subjects/ViewSubjectAssignedToStdt';
+import SubjectView from './pages/subjects/ViewSubDetails/SubjectView';
+import GetSubjectList from './pages/subjects/ViewSubDetails/GetSubjectList';
 import { AddCoe } from './pages/COE/AddCoe';
 import AddEvent from './pages/COE/AddEvent';
 import { ViewCoe } from './pages/COE/Viewcoe';
@@ -75,37 +86,36 @@ import { CoePrint } from './pages/COE/CoePrint';
 import { Addevntdetails } from './pages/COE/Addevntdetails';
 import { EditDelete } from './pages/COE/EditDelete';
 import ShowEvent from './pages/COE/ShowEvent';
+import {Addlsnpln} from './pages/LessonPlan/addlsnpln';
+import {AddLP} from './pages/LessonPlan/AddLP';
+import {UpdateLP} from './pages/LessonPlan/UpdateLP';
+import {Updatelsnpln} from './pages/LessonPlan/Updatelsnpln';
+import {ViewLP} from './pages/LessonPlan/ViewLP';
+import {Viewlsnpln} from './pages/LessonPlan/Viewlsnpln';
+import {Addlablsnpln} from './pages/LessonPlan/addlablsnpln';
+import {Editlsnpln} from './pages/LessonPlan/Editlsnpln';
+import {AddlabLP} from './pages/LessonPlan/AddlabLP';
+import {UpdatelabLP} from './pages/LessonPlan/UpdatelabLP';
+import {Updatelablsnpln} from './pages/LessonPlan/Updatelablsnpln';
+import {Viewlablsnpln} from './pages/LessonPlan/Viewlablsnpln'; 
+import {Syllebus} from './pages/LessonPlan/syllebus'; 
+import {Viewsyll} from './pages/LessonPlan/Viewsyll'; 
+import {Questionpaper} from './pages/Internal_Assessment/Questionpaper'; 
+import {Addqp} from './pages/Internal_Assessment/Addqp';
+import {Edit} from './pages/Internal_Assessment/Edit'; 
+import {EditQuestions} from './pages/Internal_Assessment/EditQuestions'; 
+import {Headers} from './pages/Newfees/headers';
+import {Addheader} from './pages/Newfees/Addheader'; 
+import {Editheader} from './pages/Newfees/Editheader'; 
+import {Usnwise} from './pages/Newfees/usnwise';
+import {Payusnwise} from './pages/Newfees/Payusnwise';
+import {Addfee} from './pages/Newfees/Addfee'; 
+import {Update} from './pages/Newfees/Update'; 
+import {Transaction} from './pages/Newfees/Transaction';
+import {EditTransaction} from './pages/Newfees/EditTransaction'; 
 import { EditEvent } from './pages/COE/EditEvent';
-import { Addlsnpln } from './pages/LessonPlan/addlsnpln';
-import { AddLP } from './pages/LessonPlan/AddLP';
-import { UpdateLP } from './pages/LessonPlan/UpdateLP';
-import { Updatelsnpln } from './pages/LessonPlan/Updatelsnpln';
-import { ViewLP } from './pages/LessonPlan/ViewLP';
-import { Viewlsnpln } from './pages/LessonPlan/Viewlsnpln';
-import { Addlablsnpln } from './pages/LessonPlan/addlablsnpln';
-import { Editlsnpln } from './pages/LessonPlan/Editlsnpln';
-import { AddlabLP } from './pages/LessonPlan/AddlabLP';
 import { Editlablsnpln } from './pages/LessonPlan/Editlablsnpln';
-import { UpdatelabLP } from './pages/LessonPlan/UpdatelabLP';
-import { Updatelablsnpln } from './pages/LessonPlan/Updatelablsnpln';
 import { ViewlabLP } from './pages/LessonPlan/ViewlabLP';
-import { Viewlablsnpln } from './pages/LessonPlan/Viewlablsnpln';
-import { Syllebus } from './pages/LessonPlan/syllebus';
-import { Viewsyll } from './pages/LessonPlan/Viewsyll';
-import { Questionpaper } from './pages/Internal_Assessment/Questionpaper';
-import { Addqp } from './pages/Internal_Assessment/Addqp';
-import { Edit } from './pages/Internal_Assessment/Edit';
-import { EditQuestions } from './pages/Internal_Assessment/EditQuestions';
-import { Headers } from './pages/Newfee/headers';
-import { Addheader } from './pages/Newfee/Addheader';
-import { Editheader } from './pages/Newfee/Editheader';
-import { Usnwise } from './pages/Newfee/usnwise';
-import { Payusnwise } from './pages/Newfee/Payusnwise';
-import { Addfee } from './pages/Newfee/Addfee';
-import {Update} from './pages/Newfee/Update';
-import { Transaction } from './pages/Newfee/Transaction';
-import { EditTransaction } from './pages/Newfee/EditTransaction';
-
 import Updatedivision from './pages/Student-module/Updatedivision';
 import Admissionformapproval from './pages/approval/Admissionformapproval';
 import ApproveAdmission from './pages/approval/ApproveAdmission';
@@ -114,6 +124,12 @@ import Viewadmissionform from './pages/Student-module/Viewadmissionform';
 import AssingWorkload from './workload/AssingWorkload';
 import GetWorkloadReport from './workload/GetWorkloadReport';
 import WorkLoadReport from './workload/WorkLoadReport';
+import { AddCwf } from './pages/CWF/AddCwf';
+import { ViewCwfWitness } from './pages/CWF/ViewCwfWitness';
+import { IndividualLoanDetails } from './pages/CWF/IndividualLoanDetails';
+import { LoanDetailsIndividual } from './pages/CWF/LoanDetailsIndividual';
+import { CwfConsolidateReport, ViewCwfLoan } from './pages/CWF/CwfConsolidateReport';
+import { ReportConsolidateCwf } from './pages/CWF/ReportConsolidateCwf';
 
 
 function App() {
@@ -310,6 +326,17 @@ function App() {
               <Route path="/marksentryia" element={<MarksEntryIa baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/iaattainmentsheet" element={<IaAttainmentSheet baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/sheetattainmentia" element={<SheetAttainmentIa baseURL={baseURL} userDetails={userDetails} loader={loader} />} />
+              <Route path="/labbasgn" element={<LabBatchAssign baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/labbasgn1" element={<LabBatchAssign1 baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/subaddandview" element={<SubjectAdd baseURL={baseURL} userDetails={userDetails} /> } /> 
+              <Route path="/internalrept" element={<StudentInternalR baseURL={baseURL} userDetails={userDetails} /> } /> 
+              <Route path="/internalrept1" element={<StudentInternalR1 baseURL={baseURL} userDetails={userDetails} /> } /> 
+              <Route path="/generatesubjects" element={<GenerateSubject baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/editsubjects" element={<EditSubjects baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/viewsubjectassign" element={<ViewSubjectAss baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/viewsubstdass" element={<ViewSubjectAssignedToStdt baseURL={baseURL}/>} />
+              <Route path="/subjectview" element={<SubjectView baseURL={baseURL} userDetails={userDetails} /> } />
+              <Route path="/getsubjectlist" element={<GetSubjectList baseURL={baseURL} userDetails={userDetails} /> } />
               {/* Gous Moudule End */}
               {/* Humera Modules Start */}
               <Route path="/coe" element={<AddCoe />} />
@@ -358,6 +385,12 @@ function App() {
               <Route path="/transaction" element={<Transaction baseURL={baseURL} userDetails={userDetails} />} />
               <Route path="/edittransaction" element={<EditTransaction baseURL={baseURL} userDetails={userDetails} />} />
               {/* Humera Module End */}
+              <Route path="/addcwf" element={<AddCwf baseURL={baseURL} userDetails={userDetails} />} />
+              <Route path="/viewwitness" element={<ViewCwfWitness baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} />} />
+              <Route path="/individualloandetails" element={<IndividualLoanDetails baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} />} />
+              <Route path="/loandetailsindividual" element={<LoanDetailsIndividual baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} loader={loader} />} />
+              <Route path="/cwfconsolidatereport" element={<CwfConsolidateReport baseURL={baseURL} userDetails={userDetails} />} />
+              <Route path="/reportconsolidatecwf" element={<ReportConsolidateCwf baseURL={baseURL} userDetails={userDetails} />} />
 
             </Routes>
           </BrowserRouter>
