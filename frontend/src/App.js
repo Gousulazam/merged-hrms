@@ -128,6 +128,8 @@ import { AddCwf } from './pages/CWF/AddCwf';
 import { ViewCwfWitness } from './pages/CWF/ViewCwfWitness';
 import { IndividualLoanDetails } from './pages/CWF/IndividualLoanDetails';
 import { LoanDetailsIndividual } from './pages/CWF/LoanDetailsIndividual';
+import { CwfConsolidateReport, ViewCwfLoan } from './pages/CWF/CwfConsolidateReport';
+import { ReportConsolidateCwf } from './pages/CWF/ReportConsolidateCwf';
 
 
 function App() {
@@ -387,6 +389,8 @@ function App() {
               <Route path="/viewwitness" element={<ViewCwfWitness baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} />} />
               <Route path="/individualloandetails" element={<IndividualLoanDetails baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} />} />
               <Route path="/loandetailsindividual" element={<LoanDetailsIndividual baseURL={baseURL} userDetails={userDetails} numberWithCommas={numberWithCommas} loader={loader} />} />
+              <Route path="/cwfconsolidatereport" element={<CwfConsolidateReport baseURL={baseURL} userDetails={userDetails} />} />
+              <Route path="/reportconsolidatecwf" element={<ReportConsolidateCwf baseURL={baseURL} userDetails={userDetails} />} />
 
             </Routes>
           </BrowserRouter>

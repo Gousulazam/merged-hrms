@@ -6148,3 +6148,15 @@ app.post('/loandetailsindividual', async (req, res) => {
 
     res.send(result);
 });
+
+app.post('/getdepartmenteoptionforcwf', async (req, res) => {
+    let data = req.body;
+    let option = `<option value="">Select Department</option><option value="all">All Department</option>`;
+    let rows = await runQuery(`SELECT id,name FROM dept WHERE cid='${data.cid}'`)
+    for (let index = 0; index < rows.length; index++) {
+        const element = rows[index];
+        option += `<option value="${element.id}">${element.name}</option>`;
+    }
+
+    res.send(option);
+});
